@@ -1,0 +1,802 @@
+/* ==========================================================================
+   CodGen Frontend Development Internship | Habitly
+   Week 1: Build the Habitly Layout
+   Technologies: Pure HTML5 & CSS3 (Zero JavaScript)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN GUIDE & CSS VARIABLES (Defined in :root as per PDF requirements)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Official CodGen Design Guide Palette */
+  --navy: #0B1F3A;            /* Header, headings */
+  --teal: #14B8A6;            /* Buttons, accents, streak highlights */
+  --teal-hover: #0D9488;      /* Hover state for buttons */
+  --bg: #F8FAFC;              /* Page background */
+  --card-bg: #FFFFFF;         /* Habit and stat cards */
+  --card-radius: 12px;        /* 12px radius specified in PDF */
+  --soft-shadow: 0 1px 3px rgba(11, 31, 58, 0.06), 0 4px 12px rgba(11, 31, 58, 0.04);
+  --hover-shadow: 0 8px 24px rgba(11, 31, 58, 0.08), 0 2px 6px rgba(11, 31, 58, 0.04);
+  --border: #E2E8F0;          /* Clean structural borders */
+
+  /* Text Tokens */
+  --text-primary: #0B1F3A;
+  --text-muted: #64748B;
+  --text-light: #94A3B8;
+
+  /* Accent Soft Backgrounds for Emojis */
+  --accent-soft: #E6F7F5;
+  --health-bg: #E0F2FE;
+  --health-color: #0284C7;
+  --learning-bg: #EEF2FF;
+  --learning-color: #4F46E5;
+  --fitness-bg: #FEF3C7;
+  --fitness-color: #D97706;
+  --wellness-bg: #ECFDF5;
+  --wellness-color: #059669;
+  --productivity-bg: #F3E8FF;
+  --productivity-color: #9333EA;
+
+  /* Typography: Inter with system fallback */
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* Strict 8px Spacing Scale (Multiples of 8px) */
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+
+  /* Transitions */
+  --transition: all 0.2s ease-in-out;
+}
+
+/* --------------------------------------------------------------------------
+   2. BASE & RESETS
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.app-container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: var(--space-24) var(--space-16);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+}
+
+/* --------------------------------------------------------------------------
+   3. HEADER
+   - The Habitly name and custom SVG logo
+   - Date shown as plain text (e.g., Tuesday, 17 November 2026)
+   - Profile avatar with SVG illustration
+   -------------------------------------------------------------------------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition);
+  cursor: pointer;
+}
+
+.brand-logo:hover {
+  transform: translateY(-2px) scale(1.04);
+}
+
+.logo-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
+  border-radius: var(--card-radius);
+}
+
+.brand-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-text {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.logo-dot {
+  color: var(--teal);
+}
+
+.brand-sub {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+.date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: 6px var(--space-16);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  box-shadow: var(--soft-shadow);
+  user-select: none;
+}
+
+.calendar-svg {
+  width: 16px;
+  height: 16px;
+  color: var(--teal);
+  flex-shrink: 0;
+}
+
+.date-text {
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.user-avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: var(--soft-shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition);
+  flex-shrink: 0;
+}
+
+.user-avatar:hover {
+  transform: scale(1.06);
+}
+
+.avatar-svg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+}
+
+.avatar-initials {
+  position: absolute;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. MAIN CONTENT & SECTIONS
+   -------------------------------------------------------------------------- */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-32);
+}
+
+/* Welcome Card with Vector Illustration */
+.welcome-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #123A63 100%);
+  border-radius: var(--card-radius);
+  padding: var(--space-24) var(--space-32);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-24);
+  box-shadow: var(--soft-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-text-wrap {
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.welcome-heading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.welcome-lead {
+  font-size: 0.9375rem;
+  color: #CBD5E1;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.quote-box {
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--teal);
+  border-radius: 8px;
+  padding: var(--space-12) var(--space-16);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+.quote-mark {
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--teal);
+  font-family: Georgia, serif;
+}
+
+.quote-text {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: #F8FAFC;
+  line-height: 1.45;
+}
+
+/* Welcome Illustration */
+.welcome-illustration-wrap {
+  width: 180px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-illustration {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+}
+
+/* --------------------------------------------------------------------------
+   5. SUMMARY STATISTICS ROW (3 Stat Cards)
+   - Done today 3/5
+   - Best streak 12 days
+   - This week 78%
+   - 12px radius + soft shadow as per PDF
+   -------------------------------------------------------------------------- */
+.summary-section {
+  width: 100%;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-16);
+}
+
+.stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: var(--space-24);
+  box-shadow: var(--soft-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--hover-shadow);
+}
+
+.stat-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+.stat-desc {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Stat Visual 1: Circular Progress Ring */
+.progress-ring {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: conic-gradient(var(--teal) 0% 60%, var(--border) 60% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.ring-center {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-text {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--teal);
+}
+
+/* Stat Visual 2: Best Streak Flame Badge */
+.streak-badge {
+  width: 60px;
+  height: 60px;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: var(--card-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.streak-flame {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.streak-tag {
+  font-size: 0.625rem;
+  font-weight: 800;
+  color: #B45309;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* Stat Visual 3: Weekly Progress Bar */
+.stat-visual-bar {
+  width: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.bar-score {
+  color: var(--teal);
+}
+
+.bar-track {
+  width: 100%;
+  height: 8px;
+  background-color: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  width: 78%;
+  height: 100%;
+  background: var(--teal);
+  border-radius: 999px;
+}
+
+/* --------------------------------------------------------------------------
+   6. HABIT CARDS GRID (At least 5 cards in a grid)
+   - Emoji, habit name, streak (highlighted in teal), visible Complete button
+   - Responsive multi-column grid via CSS Grid repeat(auto-fit, minmax(260px, 1fr))
+   -------------------------------------------------------------------------- */
+.habits-section {
+  width: 100%;
+}
+
+.habits-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: var(--space-16);
+  gap: var(--space-16);
+}
+
+.habits-title {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+
+.habits-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.active-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: 4px 12px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--navy);
+  box-shadow: var(--soft-shadow);
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--teal);
+}
+
+/* CSS Grid layout recommended in PDF */
+.habits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-16);
+}
+
+/* Habit Card (White + soft shadow + 12px radius) */
+.habit-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: var(--space-24);
+  box-shadow: var(--soft-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-16);
+  transition: var(--transition);
+}
+
+.habit-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hover-shadow);
+  border-color: #CBD5E1;
+}
+
+.habit-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.habit-emoji-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--card-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  user-select: none;
+}
+
+.emoji-health { background-color: var(--health-bg); }
+.emoji-learning { background-color: var(--learning-bg); }
+.emoji-fitness { background-color: var(--fitness-bg); }
+.emoji-wellness { background-color: var(--wellness-bg); }
+.emoji-productivity { background-color: var(--productivity-bg); }
+
+.category-badge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.badge-health { background-color: var(--health-bg); color: var(--health-color); }
+.badge-learning { background-color: var(--learning-bg); color: var(--learning-color); }
+.badge-fitness { background-color: var(--fitness-bg); color: var(--fitness-color); }
+.badge-wellness { background-color: var(--wellness-bg); color: var(--wellness-color); }
+.badge-productivity { background-color: var(--productivity-bg); color: var(--productivity-color); }
+
+.habit-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.habit-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+
+.streak-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.streak-fire {
+  font-size: 0.95rem;
+}
+
+/* Teal streak highlight as per PDF design guide */
+.streak-highlight {
+  color: var(--teal);
+  font-weight: 700;
+}
+
+/* Complete Button (Teal, visible, with hover state) */
+.btn-complete {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  min-height: 44px;
+  padding: 0 var(--space-16);
+  background-color: var(--teal);
+  color: #FFFFFF;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-family: var(--font-family);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(20, 184, 166, 0.2);
+  transition: var(--transition);
+}
+
+.btn-complete:hover {
+  background-color: var(--teal-hover);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-complete:active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+/* --------------------------------------------------------------------------
+   7. MOTIVATIONAL BANNER WITH SVG FOLIAGE
+   -------------------------------------------------------------------------- */
+.quote-banner {
+  background: linear-gradient(135deg, var(--navy) 0%, #17385E 100%);
+  border-radius: var(--card-radius);
+  padding: var(--space-24) var(--space-32);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: var(--space-20);
+  box-shadow: var(--soft-shadow);
+}
+
+.quote-banner-icon-wrap {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.banner-leaf-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.quote-banner-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+
+.quote-banner-sub {
+  font-size: 0.875rem;
+  color: #CBD5E1;
+}
+
+/* --------------------------------------------------------------------------
+   8. FOOTER
+   - 'Built with the CodGen Frontend Internship | codgen.in' (as required in PDF)
+   -------------------------------------------------------------------------- */
+.footer {
+  text-align: center;
+  padding: var(--space-24) 0;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.footer-text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.footer-link {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+  color: var(--teal-hover);
+}
+
+/* --------------------------------------------------------------------------
+   9. RESPONSIVE DESIGN (360px Phone, 768px Tablet, 1280px Laptop/Desktop)
+   -------------------------------------------------------------------------- */
+
+/* TABLET (max-width: 768px) */
+@media (max-width: 768px) {
+  .app-container {
+    padding: var(--space-16);
+    gap: var(--space-24);
+  }
+
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .date-badge {
+    display: none; /* Hide date on tablet to prevent crowding */
+  }
+
+  .welcome-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-20);
+  }
+
+  .welcome-illustration-wrap {
+    display: none; /* Hide large graphic on tablet/mobile to preserve space */
+  }
+
+  .quote-box {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  .habits-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+/* PHONE (max-width: 480px / 360px targeted) */
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 1.5rem;
+  }
+
+  .brand-sub {
+    display: none;
+  }
+
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr; /* One column on phones as per PDF */
+  }
+
+  .habits-grid {
+    grid-template-columns: 1fr; /* One column on phones as per PDF */
+  }
+
+  .welcome-heading {
+    font-size: 1.25rem;
+  }
+
+  .stat-card {
+    padding: var(--space-16);
+  }
+
+  .habit-card {
+    padding: var(--space-16);
+  }
+
+  .quote-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-16);
+  }
+}
