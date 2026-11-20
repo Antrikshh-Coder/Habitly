@@ -1,31 +1,37 @@
 /* ==========================================================================
    CodGen Frontend Development Internship | Habitly
-   Week 1: Build the Habitly Layout & Habit Cards
+   Week 1 Task: Build the Habitly Layout & Habit Cards
    Technologies: Pure HTML5 & CSS3 (Zero JavaScript)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. DESIGN GUIDE & CSS VARIABLES (Defined in :root as per PDF requirements)
+   1. DESIGN GUIDE & CSS VARIABLES
    -------------------------------------------------------------------------- */
 :root {
-  /* Official CodGen Design Guide Palette */
-  --navy: #0B1F3A;            /* Header, headings */
-  --teal: #14B8A6;            /* Buttons, accents, streak highlights */
-  --teal-hover: #0D9488;      /* Hover state for buttons */
-  --bg: #F8FAFC;              /* Page background */
-  --card-bg: #FFFFFF;         /* Habit and stat cards */
-  --card-radius: 12px;        /* 12px radius specified in PDF */
-  --soft-shadow: 0 1px 3px rgba(11, 31, 58, 0.06), 0 4px 12px rgba(11, 31, 58, 0.04);
-  --hover-shadow: 0 8px 24px rgba(11, 31, 58, 0.08), 0 2px 6px rgba(11, 31, 58, 0.04);
-  --border: #E2E8F0;          /* Clean structural borders */
+  /* Official CodGen Palette */
+  --navy: #0B1F3A;
+  --teal: #14B8A6;
+  --teal-hover: #0D9488;
+  --teal-dark: #0F766E;
+  --teal-soft: #F0FDFA;
+  --teal-light: #CCFBF1;
+  --bg: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --border: #E2E8F0;
+  --border-hover: #CBD5E1;
 
-  /* Text Tokens */
+  /* Typography Colors */
   --text-primary: #0B1F3A;
   --text-muted: #64748B;
   --text-light: #94A3B8;
 
-  /* Accent Soft Backgrounds for Emojis */
-  --accent-soft: #E6F7F5;
+  /* Card Specs: White + soft shadow + 12px radius */
+  --card-radius: 12px;
+  --soft-shadow: 0 1px 3px rgba(11, 31, 58, 0.05), 0 4px 14px rgba(11, 31, 58, 0.04);
+  --hover-shadow: 0 10px 24px rgba(11, 31, 58, 0.08), 0 3px 8px rgba(11, 31, 58, 0.04);
+  --btn-shadow: 0 2px 8px rgba(20, 184, 166, 0.25);
+
+  /* Category Backgrounds & Accent Colors */
   --health-bg: #E0F2FE;
   --health-color: #0284C7;
   --learning-bg: #EEF2FF;
@@ -37,19 +43,18 @@
   --productivity-bg: #F3E8FF;
   --productivity-color: #9333EA;
 
-  /* Typography: Inter with system fallback */
+  /* Typography */
   --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-  /* Strict 8px Spacing Scale (Multiples of 8px) */
+  /* Strict 8px Spacing Scale */
   --space-8: 8px;
   --space-16: 16px;
   --space-24: 24px;
   --space-32: 32px;
   --space-40: 40px;
-  --space-48: 48px;
 
   /* Transitions */
-  --transition: all 0.2s ease-in-out;
+  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* --------------------------------------------------------------------------
@@ -79,7 +84,7 @@ body {
 }
 
 .app-container {
-  max-width: 1040px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: var(--space-24) var(--space-16);
   width: 100%;
@@ -106,29 +111,27 @@ body {
 .header-brand {
   display: flex;
   align-items: center;
-  gap: var(--space-16);
 }
 
-.brand-logo {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
+.brand-link {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: var(--space-16);
+  text-decoration: none;
+  color: inherit;
 }
 
 .brand-logo-img {
-  width: 100%;
-  height: 100%;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 2px 8px rgba(11, 31, 58, 0.12);
+  box-shadow: 0 2px 8px rgba(11, 31, 58, 0.1);
   border: 1px solid var(--border);
   transition: transform var(--transition);
 }
 
-.brand-logo-img:hover {
+.brand-link:hover .brand-logo-img {
   transform: scale(1.05);
 }
 
@@ -138,7 +141,7 @@ body {
 }
 
 .logo-text {
-  font-size: 1.75rem;
+  font-size: 1.625rem;
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.02em;
@@ -175,11 +178,15 @@ body {
   user-select: none;
 }
 
-.calendar-svg {
-  width: 16px;
-  height: 16px;
-  color: var(--teal);
-  flex-shrink: 0;
+.date-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--teal);
+}
+
+.date-icon {
+  font-size: 0.95rem;
 }
 
 .date-text {
@@ -205,12 +212,13 @@ body {
 }
 
 .user-avatar:hover {
-  transform: scale(1.06);
+  transform: scale(1.05);
   box-shadow: 0 0 0 2px var(--teal);
 }
 
 /* --------------------------------------------------------------------------
-   4. MAIN CONTENT & SECTIONS
+   4. NEW MODERN WELCOME & MOMENTUM BANNER
+   - Clean, light, dual-card SaaS layout
    -------------------------------------------------------------------------- */
 .main-content {
   display: flex;
@@ -218,82 +226,224 @@ body {
   gap: var(--space-32);
 }
 
-/* Welcome Card with Vector Illustration */
-.welcome-card {
-  background: linear-gradient(135deg, var(--navy) 0%, #123A63 100%);
+.welcome-banner {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 55%, #F0FDFA 100%);
+  border: 1px solid var(--border);
   border-radius: var(--card-radius);
-  padding: var(--space-24) var(--space-32);
-  color: #FFFFFF;
+  padding: var(--space-32);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-24);
+  gap: var(--space-32);
   box-shadow: var(--soft-shadow);
+  position: relative;
+  overflow: hidden;
 }
 
-.welcome-text-wrap {
-  max-width: 520px;
+.welcome-banner::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.banner-left {
+  max-width: 580px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
+  gap: var(--space-12);
+  position: relative;
+  z-index: 1;
 }
 
-.welcome-heading {
-  font-size: 1.5rem;
+.banner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: var(--teal-soft);
+  border: 1px solid var(--teal-light);
+  border-radius: 999px;
+  font-size: 0.6875rem;
   font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--teal-dark);
+  width: fit-content;
+}
+
+.badge-sparkle {
+  font-size: 0.85rem;
+}
+
+.banner-heading {
+  font-size: 1.625rem;
+  font-weight: 800;
+  color: var(--navy);
   letter-spacing: -0.02em;
+  line-height: 1.25;
 }
 
-.welcome-lead {
+.banner-lead {
   font-size: 0.9375rem;
-  color: #CBD5E1;
-  font-weight: 400;
-  line-height: 1.5;
+  color: var(--text-muted);
+  line-height: 1.55;
 }
 
-.quote-box {
-  background: rgba(255, 255, 255, 0.08);
+.banner-quote-box {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
   border-left: 3px solid var(--teal);
   border-radius: 8px;
-  padding: var(--space-12) var(--space-16);
+  padding: 12px 16px;
   display: flex;
   align-items: flex-start;
-  gap: var(--space-8);
-  margin-top: var(--space-8);
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(11, 31, 58, 0.03);
 }
 
-.quote-mark {
-  font-size: 1.75rem;
-  line-height: 1;
+.quote-icon {
+  font-size: 1.6rem;
+  line-height: 0.9;
   color: var(--teal);
   font-family: Georgia, serif;
 }
 
-.quote-text {
+.quote-content {
   font-size: 0.875rem;
   font-style: italic;
-  color: #F8FAFC;
+  color: var(--navy);
   line-height: 1.45;
 }
 
-/* Welcome Illustration */
-.welcome-illustration-wrap {
-  width: 180px;
+/* Right Side: Rhythm & Momentum Widget */
+.banner-right {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
-.welcome-illustration {
+.momentum-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: var(--space-20);
+  width: 280px;
+  box-shadow: 0 4px 14px rgba(11, 31, 58, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  transition: transform var(--transition);
+}
+
+.momentum-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--hover-shadow);
+}
+
+.momentum-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.momentum-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.momentum-status {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background-color: var(--teal-soft);
+  color: var(--teal-dark);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--teal-light);
+}
+
+.momentum-body {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.momentum-score {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+
+.score-large {
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: var(--teal);
+  line-height: 1;
+}
+
+.score-total {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+.momentum-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.details-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.progress-track-mini {
   width: 100%;
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+  height: 6px;
+  background-color: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill-mini {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal) 0%, #0D9488 100%);
+  border-radius: 999px;
+}
+
+.momentum-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.flame-icon-mini {
+  font-size: 0.95rem;
+}
+
+.momentum-streak-text strong {
+  color: #B45309;
 }
 
 /* --------------------------------------------------------------------------
-   5. SUMMARY STATISTICS ROW (3 Stat Cards)
+   5. SUMMARY STATISTICS ROW (3 STAT CARDS)
    - Done today 3/5
    - Best streak 12 days
    - This week 78%
@@ -313,7 +463,7 @@ body {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--card-radius);
-  padding: var(--space-24);
+  padding: var(--space-20) var(--space-24);
   box-shadow: var(--soft-shadow);
   display: flex;
   align-items: center;
@@ -324,6 +474,7 @@ body {
 .stat-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--hover-shadow);
+  border-color: var(--border-hover);
 }
 
 .stat-meta {
@@ -331,45 +482,62 @@ body {
   flex-direction: column;
 }
 
-.stat-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
+.stat-pill {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  width: fit-content;
   margin-bottom: 4px;
 }
 
+.pill-teal { background-color: #E6F7F5; color: #0F766E; }
+.pill-amber { background-color: #FEF3C7; color: #B45309; }
+.pill-navy { background-color: #EFF6FF; color: #1D4ED8; }
+
 .stat-value {
-  font-size: 1.75rem;
+  font-size: 1.875rem;
   font-weight: 800;
   color: var(--navy);
-  line-height: 1.2;
+  line-height: 1.15;
+}
+
+.text-amber { color: #D97706; }
+.text-navy { color: var(--navy); }
+
+.stat-label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-top: 2px;
 }
 
 .stat-desc {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  margin-top: 2px;
+}
+
+.stat-visual {
+  flex-shrink: 0;
 }
 
 /* Stat Visual 1: Circular Progress Ring */
 .progress-ring {
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   background: conic-gradient(var(--teal) 0% 60%, var(--border) 60% 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .ring-center {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
   background-color: var(--card-bg);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -383,8 +551,8 @@ body {
 
 /* Stat Visual 2: Best Streak Flame Badge */
 .streak-badge {
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   background: #FFFBEB;
   border: 1px solid #FDE68A;
   border-radius: var(--card-radius);
@@ -400,7 +568,7 @@ body {
 }
 
 .streak-tag {
-  font-size: 0.625rem;
+  font-size: 0.5625rem;
   font-weight: 800;
   color: #B45309;
   letter-spacing: 0.05em;
@@ -409,7 +577,7 @@ body {
 
 /* Stat Visual 3: Weekly Progress Bar */
 .stat-visual-bar {
-  width: 110px;
+  width: 100px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -445,7 +613,7 @@ body {
 /* --------------------------------------------------------------------------
    6. HABIT CARDS GRID (At least 5 cards in a grid)
    - Emoji, habit name, streak (highlighted in teal), visible Complete button
-   - Responsive multi-column grid via CSS Grid repeat(auto-fit, minmax(260px, 1fr))
+   - Responsive multi-column grid via CSS Grid repeat(auto-fit, minmax(280px, 1fr))
    -------------------------------------------------------------------------- */
 .habits-section {
   width: 100%;
@@ -481,7 +649,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 999px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--navy);
   box-shadow: var(--soft-shadow);
   white-space: nowrap;
@@ -494,10 +662,10 @@ body {
   background-color: var(--teal);
 }
 
-/* CSS Grid layout recommended in PDF */
+/* CSS Grid layout */
 .habits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-16);
 }
 
@@ -506,7 +674,7 @@ body {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--card-radius);
-  padding: var(--space-24);
+  padding: var(--space-20);
   box-shadow: var(--soft-shadow);
   display: flex;
   flex-direction: column;
@@ -518,7 +686,7 @@ body {
 .habit-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--hover-shadow);
-  border-color: #CBD5E1;
+  border-color: var(--border-hover);
 }
 
 .habit-top {
@@ -530,7 +698,7 @@ body {
 .habit-emoji-wrap {
   width: 48px;
   height: 48px;
-  border-radius: var(--card-radius);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -565,6 +733,13 @@ body {
   gap: 6px;
 }
 
+.habit-id {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: var(--text-light);
+  letter-spacing: 0.08em;
+}
+
 .habit-name {
   font-size: 1.125rem;
   font-weight: 700;
@@ -576,7 +751,7 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--text-muted);
 }
 
@@ -607,7 +782,7 @@ body {
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(20, 184, 166, 0.2);
+  box-shadow: var(--btn-shadow);
   transition: var(--transition);
 }
 
@@ -627,42 +802,44 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   7. MOTIVATIONAL BANNER WITH SVG FOLIAGE
+   7. MOTIVATIONAL BANNER SECTION
    -------------------------------------------------------------------------- */
 .quote-banner {
   background: linear-gradient(135deg, var(--navy) 0%, #17385E 100%);
   border-radius: var(--card-radius);
-  padding: var(--space-24) var(--space-32);
+  padding: var(--space-20) var(--space-24);
   color: #FFFFFF;
   display: flex;
   align-items: center;
-  gap: var(--space-20);
+  gap: var(--space-16);
   box-shadow: var(--soft-shadow);
 }
 
-.quote-banner-icon-wrap {
+.banner-leaf-wrap {
   width: 48px;
   height: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.75rem;
   flex-shrink: 0;
 }
 
-.banner-leaf-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+.banner-leaf-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.quote-banner-title {
-  font-size: 1.25rem;
+.banner-title {
+  font-size: 1.125rem;
   font-weight: 800;
   letter-spacing: -0.01em;
-  margin-bottom: 4px;
 }
 
-.quote-banner-sub {
+.banner-sub {
   font-size: 0.875rem;
   color: #CBD5E1;
 }
@@ -700,33 +877,19 @@ body {
    9. RESPONSIVE DESIGN (360px Phone, 768px Tablet, 1280px Laptop/Desktop)
    -------------------------------------------------------------------------- */
 
-/* TABLET (max-width: 768px) */
-@media (max-width: 768px) {
-  .app-container {
-    padding: var(--space-16);
-    gap: var(--space-24);
-  }
-
-  .header {
-    flex-wrap: wrap;
-  }
-
-  .date-badge {
-    display: none; /* Hide date on tablet to prevent crowding */
-  }
-
-  .welcome-card {
+/* TABLET (max-width: 860px) */
+@media (max-width: 860px) {
+  .welcome-banner {
     flex-direction: column;
     align-items: flex-start;
-    padding: var(--space-20);
+    padding: var(--space-24);
   }
 
-  .welcome-illustration-wrap {
-    display: none; /* Hide large graphic on tablet/mobile to preserve space */
+  .banner-right {
+    width: 100%;
   }
 
-  .quote-box {
-    max-width: 100%;
+  .momentum-card {
     width: 100%;
   }
 
@@ -740,10 +903,25 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  .app-container {
+    padding: var(--space-16);
+    gap: var(--space-24);
+  }
+
+  .header {
+    flex-wrap: wrap;
+  }
+
+  .date-badge {
+    display: none; /* Hide date on tablet to prevent crowding */
+  }
+}
+
 /* PHONE (max-width: 480px / 360px targeted) */
 @media (max-width: 480px) {
   .logo-text {
-    font-size: 1.5rem;
+    font-size: 1.375rem;
   }
 
   .brand-sub {
@@ -760,20 +938,30 @@ body {
     height: 36px;
   }
 
-  .stats-grid {
-    grid-template-columns: 1fr; /* One column on phones as per PDF */
-  }
-
-  .habits-grid {
-    grid-template-columns: 1fr; /* One column on phones as per PDF */
-  }
-
-  .welcome-heading {
+  .banner-heading {
     font-size: 1.25rem;
+  }
+
+  .banner-lead {
+    font-size: 0.875rem;
+  }
+
+  /* One column on phones as required by PDF */
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
 
   .stat-card {
     padding: var(--space-16);
+  }
+
+  .stat-value {
+    font-size: 1.625rem;
+  }
+
+  /* One column on phones as required by PDF */
+  .habits-grid {
+    grid-template-columns: 1fr;
   }
 
   .habit-card {

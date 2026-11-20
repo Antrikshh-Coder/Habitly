@@ -12,7 +12,7 @@
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Core Stylesheet -->
   <link rel="stylesheet" href="style.css">
@@ -27,24 +27,20 @@
          =================================================================== -->
     <header class="header">
       <div class="header-brand">
-        <div class="brand-logo" aria-label="Habitly Logo">
+        <a href="#" class="brand-link" aria-label="Habitly Home">
           <img src="logo.jpg" alt="Habitly Logo" class="brand-logo-img">
-        </div>
-
-        <div class="brand-text-group">
-          <h1 class="logo-text">Habitly<span class="logo-dot">.</span></h1>
-          <p class="brand-sub">Build better habits, one day at a time</p>
-        </div>
+          <div class="brand-text-group">
+            <h1 class="logo-text">Habitly<span class="logo-dot">.</span></h1>
+            <p class="brand-sub">Build habits that stick</p>
+          </div>
+        </a>
       </div>
 
       <div class="header-right">
-        <!-- Date shown as plain text -->
+        <!-- Date shown as plain text as required by PDF -->
         <div class="date-badge">
-          <svg class="calendar-svg" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M3 8H17" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M7 2V5M13 2V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
+          <span class="date-dot" aria-hidden="true"></span>
+          <span class="date-icon" aria-hidden="true">📅</span>
           <span class="date-text">Friday, 20 November 2026</span>
         </div>
 
@@ -60,55 +56,58 @@
          =================================================================== -->
     <main class="main-content">
 
-      <!-- Welcome & Motivational Section with Vector Illustration -->
-      <section class="welcome-card" aria-label="Welcome and Daily Motivation">
-        <div class="welcome-text-wrap">
-          <h2 class="welcome-heading">Good morning! 👋</h2>
-          <p class="welcome-lead">Small steps every day lead to big changes. Keep showing up!</p>
-          
-          <div class="quote-box">
-            <span class="quote-mark" aria-hidden="true">“</span>
-            <blockquote class="quote-text">
+      <!-- =================================================================
+           NEW MODERN WELCOME & MOMENTUM BANNER
+           Light, crisp, professional SaaS aesthetic with dual-tone layout
+           ================================================================= -->
+      <section class="welcome-banner" aria-label="Welcome and Daily Motivation">
+        <div class="banner-left">
+          <div class="banner-badge">
+            <span class="badge-sparkle" aria-hidden="true">✨</span>
+            <span>DAILY FOCUS DASHBOARD</span>
+          </div>
+
+          <h2 class="banner-heading">Good morning, Antriksh! 👋</h2>
+          <p class="banner-lead">Small steps every day lead to big changes. Start today and celebrate every little win.</p>
+
+          <div class="banner-quote-box">
+            <span class="quote-icon" aria-hidden="true">“</span>
+            <blockquote class="quote-content">
               Your future is created by what you do today, not tomorrow.
             </blockquote>
           </div>
         </div>
 
-        <!-- Modern SVG Productivity Illustration -->
-        <div class="welcome-illustration-wrap" aria-hidden="true">
-          <svg class="welcome-illustration" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Decorative Background Aura -->
-            <circle cx="100" cy="80" r="70" fill="url(#ill-glow)" opacity="0.4"/>
-            <!-- Dashboard Tablet Screen -->
-            <rect x="35" y="25" width="130" height="105" rx="12" fill="#0B1F3A" stroke="#1D3659" stroke-width="2"/>
-            <rect x="45" y="38" width="110" height="12" rx="4" fill="#142E54"/>
-            <!-- Habit Progress Rows -->
-            <rect x="45" y="58" width="55" height="8" rx="3" fill="#64748B"/>
-            <rect x="110" y="58" width="45" height="8" rx="4" fill="#14B8A6"/>
-            
-            <rect x="45" y="74" width="45" height="8" rx="3" fill="#64748B"/>
-            <rect x="100" y="74" width="55" height="8" rx="4" fill="#14B8A6"/>
+        <div class="banner-right">
+          <!-- Daily Rhythm & Momentum Card -->
+          <div class="momentum-card">
+            <div class="momentum-header">
+              <span class="momentum-title">Today's Rhythm</span>
+              <span class="momentum-status">Active</span>
+            </div>
 
-            <rect x="45" y="90" width="60" height="8" rx="3" fill="#64748B"/>
-            <rect x="115" y="90" width="40" height="8" rx="4" fill="#14B8A6"/>
+            <div class="momentum-body">
+              <div class="momentum-score">
+                <span class="score-large">3</span>
+                <span class="score-total">/ 5</span>
+              </div>
+              <div class="momentum-details">
+                <span class="details-title">60% Completed</span>
+                <span class="details-sub">2 habits left for today</span>
+              </div>
+            </div>
 
-            <rect x="45" y="106" width="35" height="8" rx="3" fill="#64748B"/>
-            <rect x="90" y="106" width="65" height="8" rx="4" fill="#3B82F6"/>
+            <div class="momentum-progress">
+              <div class="progress-track-mini">
+                <div class="progress-fill-mini" style="width: 60%;"></div>
+              </div>
+            </div>
 
-            <!-- Floating Badge: 100% Streak -->
-            <g transform="translate(130, 95)">
-              <rect width="52" height="42" rx="8" fill="#14B8A6" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"/>
-              <text x="26" y="24" text-anchor="middle" font-family="'Inter', sans-serif" font-size="16" font-weight="800" fill="#FFFFFF">🔥</text>
-              <text x="26" y="35" text-anchor="middle" font-family="'Inter', sans-serif" font-size="8" font-weight="700" fill="#E6F7F5">STREAK</text>
-            </g>
-
-            <defs>
-              <radialGradient id="ill-glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(100 80) scale(70)">
-                <stop stop-color="#14B8A6"/>
-                <stop offset="1" stop-color="#14B8A6" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-          </svg>
+            <div class="momentum-footer">
+              <span class="flame-icon-mini">🔥</span>
+              <span class="momentum-streak-text">Personal Best: <strong>12 Days</strong></span>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -123,8 +122,9 @@
           <!-- Stat Card 1: Done Today -->
           <article class="stat-card">
             <div class="stat-meta">
-              <span class="stat-label">Done today</span>
+              <span class="stat-pill pill-teal">TODAY</span>
               <span class="stat-value">3/5</span>
+              <h3 class="stat-label">Done today</h3>
               <p class="stat-desc">Habits completed</p>
             </div>
             <div class="stat-visual">
@@ -139,8 +139,9 @@
           <!-- Stat Card 2: Best Streak -->
           <article class="stat-card">
             <div class="stat-meta">
-              <span class="stat-label">Best streak</span>
-              <span class="stat-value">12 days</span>
+              <span class="stat-pill pill-amber">RECORD</span>
+              <span class="stat-value text-amber">12 days</span>
+              <h3 class="stat-label">Best streak</h3>
               <p class="stat-desc">Your personal best</p>
             </div>
             <div class="stat-visual">
@@ -154,8 +155,9 @@
           <!-- Stat Card 3: This Week -->
           <article class="stat-card">
             <div class="stat-meta">
-              <span class="stat-label">This week</span>
-              <span class="stat-value">78%</span>
+              <span class="stat-pill pill-navy">WEEKLY</span>
+              <span class="stat-value text-navy">78%</span>
+              <h3 class="stat-label">This week</h3>
               <p class="stat-desc">Weekly consistency</p>
             </div>
             <div class="stat-visual stat-visual-bar">
@@ -199,6 +201,7 @@
               <span class="category-badge badge-health">Health</span>
             </div>
             <div class="habit-body">
+              <span class="habit-id">HABIT 01</span>
               <h3 class="habit-name">Drink 2L Water</h3>
               <div class="streak-row">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
@@ -217,6 +220,7 @@
               <span class="category-badge badge-learning">Learning</span>
             </div>
             <div class="habit-body">
+              <span class="habit-id">HABIT 02</span>
               <h3 class="habit-name">Read 20 Pages</h3>
               <div class="streak-row">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
@@ -235,6 +239,7 @@
               <span class="category-badge badge-fitness">Fitness</span>
             </div>
             <div class="habit-body">
+              <span class="habit-id">HABIT 03</span>
               <h3 class="habit-name">Morning Exercise</h3>
               <div class="streak-row">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
@@ -253,6 +258,7 @@
               <span class="category-badge badge-wellness">Wellness</span>
             </div>
             <div class="habit-body">
+              <span class="habit-id">HABIT 04</span>
               <h3 class="habit-name">Meditation</h3>
               <div class="streak-row">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
@@ -271,6 +277,7 @@
               <span class="category-badge badge-productivity">Productivity</span>
             </div>
             <div class="habit-body">
+              <span class="habit-id">HABIT 05</span>
               <h3 class="habit-name">Learn Coding</h3>
               <div class="streak-row">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
@@ -285,18 +292,14 @@
         </div>
       </section>
 
-      <!-- Motivational Banner with Vector Foliage Motif -->
+      <!-- Motivational Banner Section -->
       <section class="quote-banner" aria-label="Daily Inspiration">
-        <div class="quote-banner-icon-wrap" aria-hidden="true">
-          <svg class="banner-leaf-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="18" cy="18" r="18" fill="rgba(255,255,255,0.12)"/>
-            <path d="M18 29V14C18 9 23 7.5 28 8.5C28 14 24.5 17.5 20 18" stroke="#14B8A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M18 20C15 16.5 11.5 15.5 8.5 16.5C7.5 21 10 25 18 25" stroke="#14B8A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <div class="banner-leaf-wrap" aria-hidden="true">
+          <span>🌱</span>
         </div>
-        <div class="quote-banner-content">
-          <h3 class="quote-banner-title">Consistency beats perfection.</h3>
-          <p class="quote-banner-sub">You don't need to be perfect. You just need to keep showing up.</p>
+        <div class="banner-leaf-text">
+          <h3 class="banner-title">Consistency beats perfection.</h3>
+          <p class="banner-sub">You don't need to be perfect. You just need to keep showing up.</p>
         </div>
       </section>
 
