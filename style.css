@@ -5,7 +5,7 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. DESIGN TOKENS & CSS VARIABLES (:root)
+   1. DESIGN TOKENS & CSS VARIABLES
    -------------------------------------------------------------------------- */
 :root {
   /* Official CodGen Palette */
@@ -17,18 +17,18 @@
   --border: #E2E8F0;
   --border-hover: #CBD5E1;
 
-  /* Typography Colors */
+  /* Typography */
   --text-main: #0B1F3A;
   --text-muted: #64748B;
   --text-light: #94A3B8;
 
   /* Card Specs: White + soft shadow + 12px radius */
   --card-radius: 12px;
-  --shadow-soft: 0 1px 3px rgba(11, 31, 58, 0.06), 0 4px 12px rgba(11, 31, 58, 0.04);
-  --shadow-hover: 0 8px 20px rgba(11, 31, 58, 0.08), 0 2px 6px rgba(11, 31, 58, 0.04);
+  --shadow-soft: 0 1px 3px rgba(11, 31, 58, 0.05), 0 4px 12px rgba(11, 31, 58, 0.04);
+  --shadow-hover: 0 10px 24px rgba(11, 31, 58, 0.08), 0 3px 8px rgba(11, 31, 58, 0.04);
   --shadow-btn: 0 2px 8px rgba(20, 184, 166, 0.25);
 
-  /* Category Backgrounds & Colors */
+  /* Category Backgrounds & Accent Colors */
   --health-bg: #E0F2FE;
   --health-color: #0284C7;
   --learning-bg: #EEF2FF;
@@ -39,23 +39,24 @@
   --wellness-color: #059669;
   --productivity-bg: #F3E8FF;
   --productivity-color: #9333EA;
+  --mindful-bg: #FCE7F3;
+  --mindful-color: #DB2777;
 
-  /* Typography: Inter with system fallback */
+  /* Typography */
   --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-  /* 8px Spacing Multiples */
+  /* Strict 8px Spacing Multiples */
   --space-8: 8px;
   --space-16: 16px;
   --space-24: 24px;
   --space-32: 32px;
-  --space-40: 40px;
 
   /* Transitions */
-  --transition: all 0.2s ease-in-out;
+  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* --------------------------------------------------------------------------
-   2. BASE & RESETS
+   2. GLOBAL RESETS & BASE STYLES
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -79,7 +80,7 @@ body {
   flex-direction: column;
 }
 
-/* Centered, balanced container matching official CodGen 1040px width */
+/* Clean, balanced 1040px container */
 .container {
   max-width: 1040px;
   width: 100%;
@@ -90,7 +91,7 @@ body {
   gap: var(--space-24);
 }
 
-/* Standard Card Class (12px radius, white, soft shadow) */
+/* Card Foundation: 12px radius, soft shadow, clean border */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -101,7 +102,9 @@ body {
 
 /* --------------------------------------------------------------------------
    3. HEADER
-   - Habitly name, logo, date shown as plain text
+   - Brand logo & title
+   - Plain-text date
+   - User profile avatar
    -------------------------------------------------------------------------- */
 .header {
   display: flex;
@@ -112,31 +115,29 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-.header-brand {
-  display: flex;
-  align-items: center;
-}
-
-.brand-link {
+.brand-group {
   display: flex;
   align-items: center;
   gap: var(--space-16);
-  text-decoration: none;
-  color: inherit;
 }
 
-.brand-logo-img {
+.brand-logo {
   width: 44px;
   height: 44px;
   border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 2px 8px rgba(11, 31, 58, 0.12);
+  box-shadow: 0 2px 8px rgba(11, 31, 58, 0.1);
   border: 1px solid var(--border);
   transition: var(--transition);
 }
 
-.brand-link:hover .brand-logo-img {
+.brand-logo:hover {
   transform: scale(1.05);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .brand-title {
@@ -151,19 +152,19 @@ body {
   color: var(--teal);
 }
 
-.brand-tagline {
+.brand-subtitle {
   font-size: 0.8125rem;
   color: var(--text-muted);
   font-weight: 500;
 }
 
-.header-right {
+.header-meta {
   display: flex;
   align-items: center;
   gap: var(--space-16);
 }
 
-.date-badge {
+.date-pill {
   display: inline-flex;
   align-items: center;
   gap: var(--space-8);
@@ -175,6 +176,13 @@ body {
   color: var(--text-muted);
   box-shadow: var(--shadow-soft);
   user-select: none;
+}
+
+.date-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--teal);
 }
 
 .date-icon {
@@ -209,7 +217,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   4. MAIN LAYOUT & SECTIONS
+   4. MAIN CONTENT
    -------------------------------------------------------------------------- */
 .main {
   display: flex;
@@ -217,55 +225,84 @@ body {
   gap: var(--space-24);
 }
 
-/* Welcome & Motivational Card (Unified, Centered, No Void) */
-.welcome-card {
-  background: linear-gradient(135deg, var(--navy) 0%, #123A63 100%);
-  border: 0;
+/* Hero Greeting & Motivational Quote Card */
+.hero-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #0f2c4c 55%, #0d3a4b 100%);
+  border-radius: var(--card-radius);
+  padding: 28px 32px;
   color: #FFFFFF;
-  padding: var(--space-24) var(--space-32);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
 }
 
-.welcome-header {
+.hero-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.22) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
 }
 
-.welcome-badge {
+.hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 8px;
-  background: rgba(255, 255, 255, 0.12);
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: #5EEAD4;
   width: fit-content;
+  margin-bottom: 2px;
 }
 
-.welcome-title {
-  font-size: 1.5rem;
+.hero-title {
+  font-size: 1.625rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.25;
 }
 
-.welcome-sub {
+.hero-lead {
   font-size: 0.9375rem;
   color: #CBD5E1;
-  line-height: 1.5;
+  line-height: 1.55;
+  max-width: 680px;
 }
 
-.quote-box {
+.hero-quote {
   background: rgba(255, 255, 255, 0.08);
   border-left: 3px solid var(--teal);
-  border-radius: 6px;
-  padding: 10px 14px;
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.quote-symbol {
+  font-size: 1.75rem;
+  line-height: 0.9;
+  color: var(--teal);
+  font-family: Georgia, serif;
+  opacity: 0.7;
 }
 
 .quote-text {
@@ -280,7 +317,7 @@ body {
    - Done today 3/5
    - Best streak 12 days
    - This week 78%
-   - 12px radius, soft shadow, white background
+   - 12px radius, soft shadow
    -------------------------------------------------------------------------- */
 .stats-section {
   width: 100%;
@@ -302,9 +339,10 @@ body {
 .stat-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
+  border-color: var(--border-hover);
 }
 
-.stat-content {
+.stat-info {
   display: flex;
   flex-direction: column;
 }
@@ -345,7 +383,7 @@ body {
   color: var(--text-muted);
 }
 
-.stat-graphic {
+.stat-visual {
   flex-shrink: 0;
 }
 
@@ -360,7 +398,7 @@ body {
   justify-content: center;
 }
 
-.ring-inner {
+.ring-cutout {
   width: 44px;
   height: 44px;
   background-color: var(--card-bg);
@@ -394,7 +432,7 @@ body {
   line-height: 1;
 }
 
-.flame-text {
+.flame-label {
   font-size: 0.5625rem;
   font-weight: 800;
   color: #B45309;
@@ -402,8 +440,8 @@ body {
   margin-top: 2px;
 }
 
-/* Stat Visual 3: Progress Bar */
-.bar-graphic {
+/* Stat Visual 3: Progress Bar Track */
+.stat-visual-bar {
   width: 100px;
   display: flex;
   flex-direction: column;
@@ -438,15 +476,14 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   6. HABIT CARDS GRID (At least 5 cards in a grid)
-   - 3 columns on desktop, nicely sized (~310px width)
-   - Visible Complete button, teal streak highlight
+   6. HABIT CARDS GRID (Balanced 3x2 Grid on Desktop)
+   - 3 columns x 2 rows = 6 balanced cards with zero awkward empty slots!
    -------------------------------------------------------------------------- */
 .habits-section {
   width: 100%;
 }
 
-.habits-head {
+.section-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -454,20 +491,20 @@ body {
   gap: var(--space-16);
 }
 
-.habits-title {
+.section-title {
   font-size: 1.375rem;
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.02em;
 }
 
-.habits-sub {
+.section-subtitle {
   font-size: 0.875rem;
   color: var(--text-muted);
   margin-top: 2px;
 }
 
-.habits-counter {
+.active-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-8);
@@ -482,21 +519,21 @@ body {
   white-space: nowrap;
 }
 
-.dot-live {
+.live-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: var(--teal);
 }
 
-/* 3-column desktop layout that looks balanced and natural */
+/* 3 columns on desktop: perfectly balances 6 cards into 2 rows of 3 */
 .habits-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-16);
 }
 
-/* Habit Card (White + soft shadow + 12px radius) */
+/* Habit Card (12px radius, soft shadow, white) */
 .habit-card {
   padding: var(--space-20);
   display: flex;
@@ -517,7 +554,7 @@ body {
   justify-content: space-between;
 }
 
-.habit-emoji-wrap {
+.emoji-box {
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -533,8 +570,9 @@ body {
 .emoji-fit { background-color: var(--fitness-bg); }
 .emoji-med { background-color: var(--wellness-bg); }
 .emoji-code { background-color: var(--productivity-bg); }
+.emoji-journal { background-color: var(--mindful-bg); }
 
-.category-badge {
+.cat-badge {
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -548,8 +586,9 @@ body {
 .cat-fitness { background-color: var(--fitness-bg); color: var(--fitness-color); }
 .cat-wellness { background-color: var(--wellness-bg); color: var(--wellness-color); }
 .cat-productivity { background-color: var(--productivity-bg); color: var(--productivity-color); }
+.cat-mindful { background-color: var(--mindful-bg); color: var(--mindful-color); }
 
-.habit-info {
+.habit-body {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -582,12 +621,12 @@ body {
   width: fit-content;
 }
 
-.streak-fire {
+.streak-flame {
   font-size: 0.95rem;
 }
 
 /* Streak highlight in Teal as required by PDF */
-.streak-val {
+.streak-num {
   color: var(--teal);
   font-weight: 700;
 }
@@ -623,7 +662,7 @@ body {
   transform: translateY(0);
 }
 
-.check-icon {
+.btn-check {
   font-size: 0.875rem;
   font-weight: 800;
 }
@@ -631,7 +670,7 @@ body {
 /* --------------------------------------------------------------------------
    7. MOTIVATIONAL BANNER SECTION
    -------------------------------------------------------------------------- */
-.quote-banner {
+.banner-card {
   background: linear-gradient(135deg, var(--navy) 0%, #17385E 100%);
   border: 0;
   color: #FFFFFF;
@@ -641,7 +680,7 @@ body {
   gap: var(--space-16);
 }
 
-.banner-icon-wrap {
+.banner-icon {
   width: 48px;
   height: 48px;
   background: rgba(255, 255, 255, 0.1);
@@ -653,7 +692,7 @@ body {
   flex-shrink: 0;
 }
 
-.banner-body {
+.banner-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -725,18 +764,18 @@ body {
     flex-wrap: wrap;
   }
 
-  .date-badge {
+  .date-pill {
     display: none; /* Hide date on tablet to prevent crowding */
   }
 
-  .welcome-card {
+  .hero-card {
     padding: var(--space-20);
   }
 }
 
 /* PHONE (max-width: 520px / 360px targeted) */
 @media (max-width: 520px) {
-  .brand-logo-img {
+  .brand-logo {
     width: 38px;
     height: 38px;
   }
@@ -745,7 +784,7 @@ body {
     font-size: 1.375rem;
   }
 
-  .brand-tagline {
+  .brand-subtitle {
     display: none; /* Keep mobile header clean */
   }
 
@@ -754,11 +793,11 @@ body {
     height: 36px;
   }
 
-  .welcome-title {
+  .hero-title {
     font-size: 1.25rem;
   }
 
-  .welcome-sub {
+  .hero-lead {
     font-size: 0.875rem;
   }
 
@@ -784,7 +823,7 @@ body {
     padding: var(--space-16);
   }
 
-  .quote-banner {
+  .banner-card {
     flex-direction: column;
     align-items: flex-start;
     padding: var(--space-16);
