@@ -1,43 +1,51 @@
 /* ==========================================================================
    CodGen Frontend Development Internship | Habitly
-   Week 1: Build the Habitly Layout
+   Week 1 Task: Build the Habitly Layout & Habit Cards
    Technologies: Pure HTML5 & CSS3 (Zero JavaScript)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. DESIGN GUIDE & CSS VARIABLES (Defined in :root as per PDF requirements)
+   1. CSS VARIABLES & DESIGN GUIDE
    -------------------------------------------------------------------------- */
 :root {
-  /* Official CodGen Design Guide Palette */
-  --navy: #0B1F3A;            /* Header, headings */
-  --teal: #14B8A6;            /* Buttons, accents, streak highlights */
-  --teal-hover: #0D9488;      /* Hover state for buttons */
-  --bg: #F8FAFC;              /* Page background */
-  --card-bg: #FFFFFF;         /* Habit and stat cards */
-  --card-radius: 12px;        /* 12px radius specified in PDF */
-  --soft-shadow: 0 1px 3px rgba(11, 31, 58, 0.06), 0 4px 12px rgba(11, 31, 58, 0.04);
-  --hover-shadow: 0 8px 24px rgba(11, 31, 58, 0.08), 0 2px 6px rgba(11, 31, 58, 0.04);
-  --border: #E2E8F0;          /* Clean structural borders */
+  /* Official CodGen Palette */
+  --navy: #0B1F3A;
+  --navy-dark: #071527;
+  --navy-light: #123A63;
+  --teal: #14B8A6;
+  --teal-hover: #0D9488;
+  --teal-dark: #0F766E;
+  --teal-soft: #F0FDFA;
+  --teal-light: #CCFBF1;
+  --bg: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --border: #E2E8F0;
+  --border-hover: #CBD5E1;
 
-  /* Text Tokens */
+  /* Typography Colors */
   --text-primary: #0B1F3A;
   --text-muted: #64748B;
   --text-light: #94A3B8;
 
-  /* Accent Soft Backgrounds for Emojis */
-  --accent-soft: #E6F7F5;
-  --health-bg: #E0F2FE;
-  --health-color: #0284C7;
-  --learning-bg: #EEF2FF;
-  --learning-color: #4F46E5;
-  --fitness-bg: #FEF3C7;
-  --fitness-color: #D97706;
-  --wellness-bg: #ECFDF5;
-  --wellness-color: #059669;
-  --productivity-bg: #F3E8FF;
-  --productivity-color: #9333EA;
+  /* Card Specs as defined in PDF: White + soft shadow + 12px radius */
+  --card-radius: 12px;
+  --soft-shadow: 0 1px 3px rgba(11, 31, 58, 0.05), 0 4px 14px rgba(11, 31, 58, 0.04);
+  --hover-shadow: 0 10px 25px -4px rgba(11, 31, 58, 0.08), 0 4px 10px -2px rgba(11, 31, 58, 0.04);
+  --teal-shadow: 0 4px 14px rgba(20, 184, 166, 0.3);
 
-  /* Typography: Inter with system fallback */
+  /* Category Accent Colors */
+  --cat-health-bg: #E0F2FE;
+  --cat-health-color: #0284C7;
+  --cat-learning-bg: #EEF2FF;
+  --cat-learning-color: #4F46E5;
+  --cat-fitness-bg: #FEF3C7;
+  --cat-fitness-color: #D97706;
+  --cat-wellness-bg: #ECFDF5;
+  --cat-wellness-color: #059669;
+  --cat-productivity-bg: #F3E8FF;
+  --cat-productivity-color: #9333EA;
+
+  /* Typography */
   --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
   /* Strict 8px Spacing Scale (Multiples of 8px) */
@@ -49,11 +57,12 @@
   --space-48: 48px;
 
   /* Transitions */
-  --transition: all 0.2s ease-in-out;
+  --transition-fast: 0.18s ease;
+  --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* --------------------------------------------------------------------------
-   2. BASE & RESETS
+   2. GLOBAL RESETS & AMBIENT CANVAS
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -63,6 +72,7 @@
 
 html {
   font-size: 16px;
+  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -76,80 +86,109 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Ambient Radial Glows (Subtle, Premium SaaS feel) */
+.ambient-glow {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+.glow-top {
+  width: 480px;
+  height: 480px;
+  top: -140px;
+  right: -80px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.22) 0%, transparent 70%);
+}
+
+.glow-bottom {
+  width: 540px;
+  height: 540px;
+  bottom: -180px;
+  left: -120px;
+  background: radial-gradient(circle, rgba(11, 31, 58, 0.12) 0%, transparent 70%);
 }
 
 .app-container {
-  max-width: 1040px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: var(--space-24) var(--space-16);
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: var(--space-32);
+  position: relative;
+  z-index: 1;
 }
 
 /* --------------------------------------------------------------------------
    3. HEADER
-   - The Habitly name and custom SVG logo
-   - Date shown as plain text (e.g., Tuesday, 17 November 2026)
-   - Profile avatar with SVG illustration
+   - Habitly name and logo
+   - Date shown as plain text
+   - Profile avatar
    -------------------------------------------------------------------------- */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-16);
-  padding-bottom: var(--space-8);
+  padding-bottom: var(--space-16);
   border-bottom: 1px solid var(--border);
 }
 
 .header-brand {
   display: flex;
   align-items: center;
-  gap: var(--space-16);
 }
 
-.brand-logo {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
+.brand-link {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: transform var(--transition);
-  cursor: pointer;
+  gap: var(--space-16);
+  text-decoration: none;
+  color: inherit;
 }
 
-.brand-logo:hover {
+/* Brand Logo Image */
+.brand-logo-img {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(11, 31, 58, 0.12);
+  border: 1px solid var(--border);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.brand-link:hover .brand-logo-img {
   transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(20, 184, 166, 0.25);
 }
 
-.logo-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.25);
-  border-radius: var(--card-radius);
-}
-
-.brand-text-group {
+.brand-text-wrap {
   display: flex;
   flex-direction: column;
 }
 
-.logo-text {
-  font-size: 1.75rem;
+.brand-title {
+  font-size: 1.625rem;
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.02em;
   line-height: 1.15;
 }
 
-.logo-dot {
+.brand-dot {
   color: var(--teal);
 }
 
-.brand-sub {
+.brand-tagline {
   font-size: 0.8125rem;
   color: var(--text-muted);
   font-weight: 500;
@@ -161,6 +200,7 @@ body {
   gap: var(--space-16);
 }
 
+/* Date Badge (Plain text format) */
 .date-badge {
   display: inline-flex;
   align-items: center;
@@ -175,11 +215,15 @@ body {
   user-select: none;
 }
 
-.calendar-svg {
-  width: 16px;
-  height: 16px;
-  color: var(--teal);
-  flex-shrink: 0;
+.date-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--teal);
+}
+
+.date-icon {
+  font-size: 0.95rem;
 }
 
 .date-text {
@@ -187,42 +231,43 @@ body {
   color: var(--navy);
 }
 
+/* User Avatar */
 .user-avatar {
   position: relative;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  box-shadow: var(--soft-shadow);
-  cursor: pointer;
+  background: linear-gradient(135deg, var(--navy) 0%, #1e293b 100%);
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--transition);
-  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 4px var(--border);
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .user-avatar:hover {
   transform: scale(1.06);
+  box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 4px var(--teal);
 }
 
-.avatar-svg {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  display: block;
-}
-
-.avatar-initials {
+.avatar-status {
   position: absolute;
-  font-size: 0.75rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  letter-spacing: 0.05em;
-  pointer-events: none;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: var(--teal);
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
 }
 
 /* --------------------------------------------------------------------------
-   4. MAIN CONTENT & SECTIONS
+   4. WELCOME & MOTIVATIONAL HERO SECTION
    -------------------------------------------------------------------------- */
 .main-content {
   display: flex;
@@ -230,32 +275,67 @@ body {
   gap: var(--space-32);
 }
 
-/* Welcome Card with Vector Illustration */
 .welcome-card {
-  background: linear-gradient(135deg, var(--navy) 0%, #123A63 100%);
+  background: linear-gradient(135deg, var(--navy) 0%, #0d2847 60%, #0f3d4c 100%);
   border-radius: var(--card-radius);
-  padding: var(--space-24) var(--space-32);
+  padding: var(--space-32);
   color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-24);
   box-shadow: var(--soft-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   overflow: hidden;
 }
 
-.welcome-text-wrap {
-  max-width: 540px;
+.welcome-card::after {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.welcome-inner {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-24);
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-text-group {
+  max-width: 560px;
+}
+
+.welcome-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--teal-light);
+  margin-bottom: var(--space-12);
 }
 
 .welcome-heading {
-  font-size: 1.5rem;
+  font-size: 1.625rem;
   font-weight: 800;
   letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: var(--space-8);
+}
+
+.welcome-gradient-text {
+  color: var(--teal);
 }
 
 .welcome-lead {
@@ -265,22 +345,28 @@ body {
   line-height: 1.5;
 }
 
-.quote-box {
+.quote-card {
   background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-left: 3px solid var(--teal);
-  border-radius: 8px;
-  padding: var(--space-12) var(--space-16);
+  border-radius: var(--card-radius);
+  padding: var(--space-16) var(--space-20);
+  max-width: 380px;
   display: flex;
   align-items: flex-start;
   gap: var(--space-8);
-  margin-top: var(--space-8);
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
 
-.quote-mark {
-  font-size: 1.75rem;
-  line-height: 1;
+.quote-symbol {
+  font-size: 1.85rem;
+  line-height: 0.9;
   color: var(--teal);
   font-family: Georgia, serif;
+  opacity: 0.7;
 }
 
 .quote-text {
@@ -290,31 +376,27 @@ body {
   line-height: 1.45;
 }
 
-/* Welcome Illustration */
-.welcome-illustration-wrap {
-  width: 180px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.welcome-illustration {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
-}
-
 /* --------------------------------------------------------------------------
-   5. SUMMARY STATISTICS ROW (3 Stat Cards)
+   5. SUMMARY STATISTICS ROW (3 STAT CARDS)
    - Done today 3/5
    - Best streak 12 days
    - This week 78%
-   - 12px radius + soft shadow as per PDF
+   - 12px radius, soft shadow, white background
    -------------------------------------------------------------------------- */
 .summary-section {
   width: 100%;
+}
+
+.section-label-row {
+  margin-bottom: var(--space-8);
+}
+
+.section-micro-label {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-light);
 }
 
 .stats-grid {
@@ -328,96 +410,132 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--card-radius);
   padding: var(--space-24);
+  position: relative;
+  overflow: hidden;
   box-shadow: var(--soft-shadow);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: var(--transition);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--hover-shadow);
+  border-color: var(--border-hover);
 }
 
-.stat-meta {
+/* Card Accent Indicator Strips */
+.card-accent-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.strip-teal { background: linear-gradient(90deg, var(--teal) 0%, #0D9488 100%); }
+.strip-amber { background: linear-gradient(90deg, #F59E0B 0%, #D97706 100%); }
+.strip-navy { background: linear-gradient(90deg, var(--navy) 0%, #3B82F6 100%); }
+
+.stat-info {
   display: flex;
   flex-direction: column;
 }
 
-.stat-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  margin-bottom: 4px;
+.stat-tag {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  width: fit-content;
+  margin-bottom: 6px;
 }
+
+.tag-teal { background-color: var(--teal-soft); color: var(--teal-dark); }
+.tag-amber { background-color: #FEF3C7; color: #B45309; }
+.tag-navy { background-color: #EFF6FF; color: #1D4ED8; }
 
 .stat-value {
-  font-size: 1.75rem;
+  font-size: 1.875rem;
   font-weight: 800;
   color: var(--navy);
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
-.stat-desc {
+.text-amber { color: #D97706; }
+.text-navy { color: var(--navy); }
+
+.stat-label {
   font-size: 0.8125rem;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--navy);
   margin-top: 2px;
 }
 
-/* Stat Visual 1: Circular Progress Ring */
+.stat-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.stat-visual {
+  flex-shrink: 0;
+}
+
+/* Stat Visual 1: Circular Progress Ring (CSS conic-gradient) */
 .progress-ring {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: conic-gradient(var(--teal) 0% 60%, var(--border) 60% 100%);
+  background: conic-gradient(var(--teal) 0% 60%, #E2E8F0 60% 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
-.ring-center {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
+.ring-cutout {
+  width: 48px;
+  height: 48px;
   background-color: var(--card-bg);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-.ring-text {
+.ring-percent {
   font-size: 0.75rem;
   font-weight: 800;
-  color: var(--teal);
+  color: var(--teal-dark);
 }
 
-/* Stat Visual 2: Best Streak Flame Badge */
-.streak-badge {
-  width: 60px;
-  height: 60px;
-  background: #FFFBEB;
+/* Stat Visual 2: Fire Streak Badge */
+.flame-box {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
   border: 1px solid #FDE68A;
   border-radius: var(--card-radius);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.12);
 }
 
-.streak-flame {
-  font-size: 1.5rem;
+.flame-emoji {
+  font-size: 1.65rem;
   line-height: 1;
 }
 
-.streak-tag {
-  font-size: 0.625rem;
+.flame-caption {
+  font-size: 0.5625rem;
   font-weight: 800;
   color: #B45309;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   margin-top: 2px;
 }
 
@@ -429,7 +547,7 @@ body {
   gap: 6px;
 }
 
-.bar-header {
+.bar-meta {
   display: flex;
   justify-content: space-between;
   font-size: 0.6875rem;
@@ -437,8 +555,8 @@ body {
   color: var(--text-muted);
 }
 
-.bar-score {
-  color: var(--teal);
+.bar-current {
+  color: var(--teal-dark);
 }
 
 .bar-track {
@@ -452,14 +570,15 @@ body {
 .bar-fill {
   width: 78%;
   height: 100%;
-  background: var(--teal);
+  background: linear-gradient(90deg, var(--teal) 0%, #0D9488 100%);
   border-radius: 999px;
 }
 
 /* --------------------------------------------------------------------------
    6. HABIT CARDS GRID (At least 5 cards in a grid)
    - Emoji, habit name, streak (highlighted in teal), visible Complete button
-   - Responsive multi-column grid via CSS Grid repeat(auto-fit, minmax(260px, 1fr))
+   - Responsive multi-column grid
+   - 12px radius, soft shadow, clean hover elevation
    -------------------------------------------------------------------------- */
 .habits-section {
   width: 100%;
@@ -486,16 +605,16 @@ body {
   margin-top: 2px;
 }
 
-.active-badge {
+.active-habits-pill {
   display: inline-flex;
   align-items: center;
   gap: var(--space-8);
-  padding: 4px 12px;
+  padding: 6px var(--space-16);
   background-color: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 999px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--navy);
   box-shadow: var(--soft-shadow);
   white-space: nowrap;
@@ -506,12 +625,13 @@ body {
   height: 8px;
   border-radius: 50%;
   background-color: var(--teal);
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
 }
 
-/* CSS Grid layout recommended in PDF */
+/* Grid layout as recommended in the PDF */
 .habits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--space-16);
 }
 
@@ -526,13 +646,13 @@ body {
   flex-direction: column;
   justify-content: space-between;
   gap: var(--space-16);
-  transition: var(--transition);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
 }
 
 .habit-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   box-shadow: var(--hover-shadow);
-  border-color: #CBD5E1;
+  border-color: var(--border-hover);
 }
 
 .habit-top {
@@ -541,42 +661,59 @@ body {
   justify-content: space-between;
 }
 
-.habit-emoji-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--card-radius);
+.habit-emoji-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform var(--transition-fast);
+}
+
+.habit-card:hover .habit-emoji-circle {
+  transform: scale(1.08);
+}
+
+.emoji-icon {
+  font-size: 1.7rem;
+  line-height: 1;
   user-select: none;
 }
 
-.emoji-health { background-color: var(--health-bg); }
-.emoji-learning { background-color: var(--learning-bg); }
-.emoji-fitness { background-color: var(--fitness-bg); }
-.emoji-wellness { background-color: var(--wellness-bg); }
-.emoji-productivity { background-color: var(--productivity-bg); }
+.emoji-health { background-color: var(--cat-health-bg); border: 1px solid #BAE6FD; }
+.emoji-learning { background-color: var(--cat-learning-bg); border: 1px solid #C7D2FE; }
+.emoji-fitness { background-color: var(--cat-fitness-bg); border: 1px solid #FDE68A; }
+.emoji-wellness { background-color: var(--cat-wellness-bg); border: 1px solid #A7F3D0; }
+.emoji-productivity { background-color: var(--cat-productivity-bg); border: 1px solid #E9D5FF; }
 
-.category-badge {
+.category-pill {
   font-size: 0.6875rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 4px 8px;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
   border-radius: 999px;
+  text-transform: uppercase;
 }
 
-.badge-health { background-color: var(--health-bg); color: var(--health-color); }
-.badge-learning { background-color: var(--learning-bg); color: var(--learning-color); }
-.badge-fitness { background-color: var(--fitness-bg); color: var(--fitness-color); }
-.badge-wellness { background-color: var(--wellness-bg); color: var(--wellness-color); }
-.badge-productivity { background-color: var(--productivity-bg); color: var(--productivity-color); }
+.pill-health { background-color: var(--cat-health-bg); color: var(--cat-health-color); }
+.pill-learning { background-color: var(--cat-learning-bg); color: var(--cat-learning-color); }
+.pill-fitness { background-color: var(--cat-fitness-bg); color: var(--cat-fitness-color); }
+.pill-wellness { background-color: var(--cat-wellness-bg); color: var(--cat-wellness-color); }
+.pill-productivity { background-color: var(--cat-productivity-bg); color: var(--cat-productivity-color); }
 
-.habit-body {
+.habit-details {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.habit-id {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: var(--text-light);
+  letter-spacing: 0.08em;
 }
 
 .habit-name {
@@ -586,25 +723,30 @@ body {
   letter-spacing: -0.01em;
 }
 
-.streak-row {
-  display: flex;
+.streak-badge {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.875rem;
+  background-color: #FFFBEB;
+  border: 1px solid #FEF3C7;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
   color: var(--text-muted);
+  width: fit-content;
 }
 
 .streak-fire {
   font-size: 0.95rem;
 }
 
-/* Teal streak highlight as per PDF design guide */
+/* Streak highlight in Teal as required by PDF */
 .streak-highlight {
   color: var(--teal);
   font-weight: 700;
 }
 
-/* Complete Button (Teal, visible, with hover state) */
+/* Visible 'Complete' button with hover state */
 .btn-complete {
   width: 100%;
   display: flex;
@@ -620,14 +762,15 @@ body {
   font-family: var(--font-family);
   font-size: 0.875rem;
   font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
   box-shadow: 0 1px 2px rgba(20, 184, 166, 0.2);
-  transition: var(--transition);
+  transition: background-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .btn-complete:hover {
   background-color: var(--teal-hover);
-  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.35);
+  box-shadow: var(--teal-shadow);
   transform: translateY(-1px);
 }
 
@@ -635,16 +778,16 @@ body {
   transform: translateY(0);
 }
 
-.btn-icon {
+.btn-check {
   font-size: 0.875rem;
   font-weight: 800;
 }
 
 /* --------------------------------------------------------------------------
-   7. MOTIVATIONAL BANNER WITH SVG FOLIAGE
+   7. MOTIVATIONAL BANNER SECTION
    -------------------------------------------------------------------------- */
 .quote-banner {
-  background: linear-gradient(135deg, var(--navy) 0%, #17385E 100%);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
   border-radius: var(--card-radius);
   padding: var(--space-24) var(--space-32);
   color: #FFFFFF;
@@ -654,42 +797,54 @@ body {
   box-shadow: var(--soft-shadow);
 }
 
-.quote-banner-icon-wrap {
-  width: 48px;
-  height: 48px;
+.banner-icon-box {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--card-radius);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.banner-leaf-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
+.banner-plant {
+  font-size: 1.85rem;
+  line-height: 1;
 }
 
-.quote-banner-title {
-  font-size: 1.25rem;
+.banner-text-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.banner-title {
+  font-size: 1.1875rem;
   font-weight: 800;
   letter-spacing: -0.01em;
-  margin-bottom: 4px;
 }
 
-.quote-banner-sub {
+.banner-sub {
   font-size: 0.875rem;
   color: #CBD5E1;
 }
 
 /* --------------------------------------------------------------------------
    8. FOOTER
-   - 'Built with the CodGen Frontend Internship | codgen.in' (as required in PDF)
+   - Exactly: 'Built with the CodGen Frontend Internship | codgen.in'
    -------------------------------------------------------------------------- */
 .footer {
   text-align: center;
   padding: var(--space-24) 0;
   border-top: 1px solid var(--border);
   margin-top: auto;
+}
+
+.footer-inner {
+  max-width: 1080px;
+  margin: 0 auto;
 }
 
 .footer-text {
@@ -702,7 +857,7 @@ body {
   color: var(--teal);
   text-decoration: none;
   font-weight: 600;
-  transition: var(--transition);
+  transition: color var(--transition-fast);
 }
 
 .footer-link:hover {
@@ -711,7 +866,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   9. RESPONSIVE DESIGN (360px Phone, 768px Tablet, 1280px Laptop/Desktop)
+   9. RESPONSIVE DESIGN (360px Phone, 768px Tablet, 1280px Laptop)
    -------------------------------------------------------------------------- */
 
 /* TABLET (max-width: 768px) */
@@ -730,16 +885,15 @@ body {
   }
 
   .welcome-card {
-    flex-direction: column;
-    align-items: flex-start;
     padding: var(--space-20);
   }
 
-  .welcome-illustration-wrap {
-    display: none; /* Hide large graphic on tablet/mobile to preserve space */
+  .welcome-inner {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .quote-box {
+  .quote-card {
     max-width: 100%;
     width: 100%;
   }
@@ -756,17 +910,17 @@ body {
 
 /* PHONE (max-width: 480px / 360px targeted) */
 @media (max-width: 480px) {
-  .logo-text {
-    font-size: 1.5rem;
+  .brand-logo-img {
+    width: 40px;
+    height: 40px;
   }
 
-  .brand-sub {
-    display: none;
+  .brand-title {
+    font-size: 1.375rem;
   }
 
-  .brand-logo {
-    width: 38px;
-    height: 38px;
+  .brand-tagline {
+    display: none; /* Keep mobile header clean */
   }
 
   .user-avatar {
@@ -774,20 +928,30 @@ body {
     height: 36px;
   }
 
-  .stats-grid {
-    grid-template-columns: 1fr; /* One column on phones as per PDF */
-  }
-
-  .habits-grid {
-    grid-template-columns: 1fr; /* One column on phones as per PDF */
-  }
-
   .welcome-heading {
     font-size: 1.25rem;
   }
 
+  .welcome-lead {
+    font-size: 0.875rem;
+  }
+
+  /* One column on phones as required by PDF */
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
   .stat-card {
     padding: var(--space-16);
+  }
+
+  .stat-value {
+    font-size: 1.625rem;
+  }
+
+  /* One column on phones as required by PDF */
+  .habits-grid {
+    grid-template-columns: 1fr;
   }
 
   .habit-card {

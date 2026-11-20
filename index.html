@@ -3,77 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Habitly – A modern, responsive habit-tracking dashboard built for CodGen Frontend Internship Week 1.">
+  <meta name="description" content="Habitly – Premium, modern, and responsive habit-tracking dashboard built for CodGen Frontend Internship Week 1.">
   <title>Habitly | Build habits that stick</title>
 
-  <!-- SVG Brand Favicon -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='28' fill='%2314B8A6'/%3E%3Cpath d='M50 80 V36 C50 22 62 18 76 20 C76 34 66 44 54 46' stroke='white' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M50 52 C42 42 32 40 24 42 C22 54 28 66 50 66' stroke='white' stroke-width='7' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+  <!-- Browser Favicon using user's logo -->
+  <link rel="icon" type="image/jpeg" href="logo.jpg">
 
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Core Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!-- Ambient Background Glows -->
+  <div class="ambient-glow glow-top" aria-hidden="true"></div>
+  <div class="ambient-glow glow-bottom" aria-hidden="true"></div>
+
   <div class="app-container">
 
     <!-- ===================================================================
          HEADER
-         Requirements: Habitly name and logo/emoji, plain-text date
+         Requirements: Habitly name, logo, and plain-text date
          =================================================================== -->
     <header class="header">
       <div class="header-brand">
-        <!-- Custom Vector SVG Logo -->
-        <div class="brand-logo" aria-label="Habitly Logo">
-          <svg class="logo-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect width="44" height="44" rx="12" fill="url(#logo-grad)"/>
-            <!-- Organic Growth Sprout Path -->
-            <path d="M22 35V16C22 9.5 28 7.5 34 8.5C34 15 29.5 20 24 21" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M22 23.5C18.5 19 14 18 10.5 19C9.5 24.5 12.5 30 22 30" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <defs>
-              <linearGradient id="logo-grad" x1="0" y1="0" x2="44" y2="44" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#14B8A6"/>
-                <stop offset="1" stop-color="#0F766E"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-
-        <div class="brand-text-group">
-          <h1 class="logo-text">Habitly<span class="logo-dot">.</span></h1>
-          <p class="brand-sub">Build better habits, one day at a time</p>
-        </div>
+        <!-- Official Habitly Brand Logo Image -->
+        <a href="#" class="brand-link" aria-label="Habitly Home">
+          <img src="logo.jpg" alt="Habitly Logo" class="brand-logo-img">
+          <div class="brand-text-wrap">
+            <span class="brand-title">Habitly<span class="brand-dot">.</span></span>
+            <span class="brand-tagline">Build habits that stick</span>
+          </div>
+        </a>
       </div>
 
       <div class="header-right">
-        <!-- Date shown as plain text -->
+        <!-- Date shown as plain text as required by PDF -->
         <div class="date-badge">
-          <svg class="calendar-svg" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M3 8H17" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M7 2V5M13 2V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-          <span class="date-text">Tuesday, 17 November 2026</span>
+          <span class="date-pulse" aria-hidden="true"></span>
+          <span class="date-icon" aria-hidden="true">📅</span>
+          <span class="date-text">Friday, 20 November 2026</span>
         </div>
 
-        <!-- User Profile Avatar with SVG Illustration -->
+        <!-- Profile Avatar -->
         <div class="user-avatar" title="Antriksh Manwadkar" aria-label="User Profile">
-          <svg class="avatar-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="18" cy="18" r="18" fill="url(#avatar-grad)"/>
-            <circle cx="18" cy="13" r="5.5" fill="#E2E8F0"/>
-            <path d="M7.5 30C7.5 24.5 12.2 21 18 21C23.8 21 28.5 24.5 28.5 30" fill="#E2E8F0"/>
-            <defs>
-              <linearGradient id="avatar-grad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#0B1F3A"/>
-                <stop offset="1" stop-color="#1E3A8A"/>
-              </linearGradient>
-            </defs>
-          </svg>
           <span class="avatar-initials">AM</span>
+          <span class="avatar-status" title="Active today" aria-hidden="true"></span>
         </div>
       </div>
     </header>
@@ -83,55 +62,29 @@
          =================================================================== -->
     <main class="main-content">
 
-      <!-- Welcome & Motivational Section with Vector Illustration -->
+      <!-- Welcome Hero Section -->
       <section class="welcome-card" aria-label="Welcome and Daily Motivation">
-        <div class="welcome-text-wrap">
-          <h2 class="welcome-heading">Good morning! 👋</h2>
-          <p class="welcome-lead">Small steps every day lead to big changes. Keep showing up!</p>
-          
-          <div class="quote-box">
-            <span class="quote-mark" aria-hidden="true">“</span>
+        <div class="welcome-inner">
+          <div class="welcome-text-group">
+            <div class="welcome-pill">
+              <span class="welcome-sparkle" aria-hidden="true">✨</span>
+              <span>DAILY PROGRESSION DASHBOARD</span>
+            </div>
+            <h2 class="welcome-heading">
+              Build better habits.<br>
+              <span class="welcome-gradient-text">Become your best self.</span>
+            </h2>
+            <p class="welcome-lead">
+              Small steps every day lead to big changes. Start today, stay consistent, and celebrate every win.
+            </p>
+          </div>
+
+          <div class="quote-card">
+            <span class="quote-symbol" aria-hidden="true">“</span>
             <blockquote class="quote-text">
-              Your future is created by what you do today, not tomorrow.
+              Consistency beats perfection. You don't need to be perfect, you just need to keep showing up.
             </blockquote>
           </div>
-        </div>
-
-        <!-- Modern SVG Productivity Illustration -->
-        <div class="welcome-illustration-wrap" aria-hidden="true">
-          <svg class="welcome-illustration" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Decorative Background Aura -->
-            <circle cx="100" cy="80" r="70" fill="url(#ill-glow)" opacity="0.4"/>
-            <!-- Dashboard Tablet Screen -->
-            <rect x="35" y="25" width="130" height="105" rx="12" fill="#0B1F3A" stroke="#1D3659" stroke-width="2"/>
-            <rect x="45" y="38" width="110" height="12" rx="4" fill="#142E54"/>
-            <!-- Habit Progress Rows -->
-            <rect x="45" y="58" width="55" height="8" rx="3" fill="#64748B"/>
-            <rect x="110" y="58" width="45" height="8" rx="4" fill="#14B8A6"/>
-            
-            <rect x="45" y="74" width="45" height="8" rx="3" fill="#64748B"/>
-            <rect x="100" y="74" width="55" height="8" rx="4" fill="#14B8A6"/>
-
-            <rect x="45" y="90" width="60" height="8" rx="3" fill="#64748B"/>
-            <rect x="115" y="90" width="40" height="8" rx="4" fill="#14B8A6"/>
-
-            <rect x="45" y="106" width="35" height="8" rx="3" fill="#64748B"/>
-            <rect x="90" y="106" width="65" height="8" rx="4" fill="#3B82F6"/>
-
-            <!-- Floating Badge: 100% Streak -->
-            <g transform="translate(130, 95)">
-              <rect width="52" height="42" rx="8" fill="#14B8A6" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"/>
-              <text x="26" y="24" text-anchor="middle" font-family="'Inter', sans-serif" font-size="16" font-weight="800" fill="#FFFFFF">🔥</text>
-              <text x="26" y="35" text-anchor="middle" font-family="'Inter', sans-serif" font-size="8" font-weight="700" fill="#E6F7F5">STREAK</text>
-            </g>
-
-            <defs>
-              <radialGradient id="ill-glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(100 80) scale(70)">
-                <stop stop-color="#14B8A6"/>
-                <stop offset="1" stop-color="#14B8A6" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-          </svg>
         </div>
       </section>
 
@@ -141,50 +94,60 @@
            Best streak 12 days, This week 78%), 12px radius, soft shadow
            =================================================================== -->
       <section class="summary-section" aria-label="Summary Statistics">
+        <div class="section-label-row">
+          <h3 class="section-micro-label">OVERVIEW METRICS</h3>
+        </div>
+
         <div class="stats-grid">
 
-          <!-- Stat Card 1: Done Today -->
+          <!-- Card 1: Done Today -->
           <article class="stat-card">
-            <div class="stat-meta">
-              <span class="stat-label">Done today</span>
+            <div class="card-accent-strip strip-teal" aria-hidden="true"></div>
+            <div class="stat-info">
+              <span class="stat-tag tag-teal">TODAY</span>
               <span class="stat-value">3/5</span>
+              <h4 class="stat-label">Done today</h4>
               <p class="stat-desc">Habits completed</p>
             </div>
             <div class="stat-visual">
               <div class="progress-ring" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="60% of habits completed today">
-                <div class="ring-center">
-                  <span class="ring-text">60%</span>
+                <div class="ring-cutout">
+                  <span class="ring-percent">60%</span>
                 </div>
               </div>
             </div>
           </article>
 
-          <!-- Stat Card 2: Best Streak -->
+          <!-- Card 2: Best Streak -->
           <article class="stat-card">
-            <div class="stat-meta">
-              <span class="stat-label">Best streak</span>
-              <span class="stat-value">12 days</span>
+            <div class="card-accent-strip strip-amber" aria-hidden="true"></div>
+            <div class="stat-info">
+              <span class="stat-tag tag-amber">RECORD</span>
+              <span class="stat-value text-amber">12 days</span>
+              <h4 class="stat-label">Best streak</h4>
               <p class="stat-desc">Your personal best</p>
             </div>
             <div class="stat-visual">
-              <div class="streak-badge" aria-label="Active best streak">
-                <span class="streak-flame" aria-hidden="true">🔥</span>
-                <span class="streak-tag">ACTIVE</span>
+              <div class="flame-box">
+                <span class="flame-emoji" aria-hidden="true">🔥</span>
+                <span class="flame-caption">ACTIVE</span>
               </div>
             </div>
           </article>
 
-          <!-- Stat Card 3: This Week -->
+          <!-- Card 3: This Week -->
           <article class="stat-card">
-            <div class="stat-meta">
-              <span class="stat-label">This week</span>
-              <span class="stat-value">78%</span>
+            <div class="card-accent-strip strip-navy" aria-hidden="true"></div>
+            <div class="stat-info">
+              <span class="stat-tag tag-navy">WEEKLY</span>
+              <span class="stat-value text-navy">78%</span>
+              <h4 class="stat-label">This week</h4>
               <p class="stat-desc">Weekly consistency</p>
             </div>
             <div class="stat-visual stat-visual-bar">
-              <div class="bar-header">
-                <span class="bar-sub">Target: 80%</span>
-                <span class="bar-score">78%</span>
+              <div class="bar-meta">
+                <span class="bar-target">Target 80%</span>
+                <span class="bar-current">78%</span>
               </div>
               <div class="bar-track" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="78% weekly consistency">
                 <div class="bar-fill"></div>
@@ -198,16 +161,16 @@
       <!-- ===================================================================
            HABIT CARDS GRID
            Requirements: At least 5 cards in a grid. Each has an emoji, a
-           habit name, a streak (e.g. 7 days), and a visible Complete button.
+           habit name, a streak (e.g. 7 days), and a visible 'Complete' button.
            =================================================================== -->
-      <section class="habits-section" aria-labelledby="habits-title">
+      <section class="habits-section" aria-labelledby="habits-heading">
         
         <div class="habits-header">
-          <div>
-            <h2 id="habits-title" class="habits-title">Your Daily Habits</h2>
+          <div class="habits-title-group">
+            <h2 id="habits-heading" class="habits-title">Your Daily Habits</h2>
             <p class="habits-subtitle">Stay consistent and track your progress.</p>
           </div>
-          <div class="active-badge">
+          <div class="active-habits-pill">
             <span class="status-dot" aria-hidden="true"></span>
             <span>5 Active Habits</span>
           </div>
@@ -218,108 +181,119 @@
           <!-- Habit 1: Drink 2L Water -->
           <article class="habit-card">
             <div class="habit-top">
-              <div class="habit-emoji-wrap emoji-health" aria-hidden="true">💧</div>
-              <span class="category-badge badge-health">Health</span>
+              <div class="habit-emoji-circle emoji-health" aria-hidden="true">
+                <span class="emoji-icon">💧</span>
+              </div>
+              <span class="category-pill pill-health">Health</span>
             </div>
-            <div class="habit-body">
+            <div class="habit-details">
+              <span class="habit-id">HABIT 01</span>
               <h3 class="habit-name">Drink 2L Water</h3>
-              <div class="streak-row">
+              <div class="streak-badge">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
                 <span class="streak-text">Streak: <strong class="streak-highlight">7 days</strong></span>
               </div>
             </div>
             <button type="button" class="btn-complete" aria-label="Complete Drink 2L Water">
-              <span class="btn-icon" aria-hidden="true">✓</span> Complete
+              <span class="btn-check" aria-hidden="true">✓</span> Complete
             </button>
           </article>
 
           <!-- Habit 2: Read 20 Pages -->
           <article class="habit-card">
             <div class="habit-top">
-              <div class="habit-emoji-wrap emoji-learning" aria-hidden="true">📚</div>
-              <span class="category-badge badge-learning">Learning</span>
+              <div class="habit-emoji-circle emoji-learning" aria-hidden="true">
+                <span class="emoji-icon">📚</span>
+              </div>
+              <span class="category-pill pill-learning">Learning</span>
             </div>
-            <div class="habit-body">
+            <div class="habit-details">
+              <span class="habit-id">HABIT 02</span>
               <h3 class="habit-name">Read 20 Pages</h3>
-              <div class="streak-row">
+              <div class="streak-badge">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
                 <span class="streak-text">Streak: <strong class="streak-highlight">12 days</strong></span>
               </div>
             </div>
             <button type="button" class="btn-complete" aria-label="Complete Read 20 Pages">
-              <span class="btn-icon" aria-hidden="true">✓</span> Complete
+              <span class="btn-check" aria-hidden="true">✓</span> Complete
             </button>
           </article>
 
           <!-- Habit 3: Morning Exercise -->
           <article class="habit-card">
             <div class="habit-top">
-              <div class="habit-emoji-wrap emoji-fitness" aria-hidden="true">🏃</div>
-              <span class="category-badge badge-fitness">Fitness</span>
+              <div class="habit-emoji-circle emoji-fitness" aria-hidden="true">
+                <span class="emoji-icon">🏃</span>
+              </div>
+              <span class="category-pill pill-fitness">Fitness</span>
             </div>
-            <div class="habit-body">
+            <div class="habit-details">
+              <span class="habit-id">HABIT 03</span>
               <h3 class="habit-name">Morning Exercise</h3>
-              <div class="streak-row">
+              <div class="streak-badge">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
                 <span class="streak-text">Streak: <strong class="streak-highlight">5 days</strong></span>
               </div>
             </div>
             <button type="button" class="btn-complete" aria-label="Complete Morning Exercise">
-              <span class="btn-icon" aria-hidden="true">✓</span> Complete
+              <span class="btn-check" aria-hidden="true">✓</span> Complete
             </button>
           </article>
 
           <!-- Habit 4: Meditation -->
           <article class="habit-card">
             <div class="habit-top">
-              <div class="habit-emoji-wrap emoji-wellness" aria-hidden="true">🧘</div>
-              <span class="category-badge badge-wellness">Wellness</span>
+              <div class="habit-emoji-circle emoji-wellness" aria-hidden="true">
+                <span class="emoji-icon">🧘</span>
+              </div>
+              <span class="category-pill pill-wellness">Wellness</span>
             </div>
-            <div class="habit-body">
+            <div class="habit-details">
+              <span class="habit-id">HABIT 04</span>
               <h3 class="habit-name">Meditation</h3>
-              <div class="streak-row">
+              <div class="streak-badge">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
                 <span class="streak-text">Streak: <strong class="streak-highlight">9 days</strong></span>
               </div>
             </div>
             <button type="button" class="btn-complete" aria-label="Complete Meditation">
-              <span class="btn-icon" aria-hidden="true">✓</span> Complete
+              <span class="btn-check" aria-hidden="true">✓</span> Complete
             </button>
           </article>
 
           <!-- Habit 5: Learn Coding -->
           <article class="habit-card">
             <div class="habit-top">
-              <div class="habit-emoji-wrap emoji-productivity" aria-hidden="true">💻</div>
-              <span class="category-badge badge-productivity">Productivity</span>
+              <div class="habit-emoji-circle emoji-productivity" aria-hidden="true">
+                <span class="emoji-icon">💻</span>
+              </div>
+              <span class="category-pill pill-productivity">Productivity</span>
             </div>
-            <div class="habit-body">
+            <div class="habit-details">
+              <span class="habit-id">HABIT 05</span>
               <h3 class="habit-name">Learn Coding</h3>
-              <div class="streak-row">
+              <div class="streak-badge">
                 <span class="streak-fire" aria-hidden="true">🔥</span>
                 <span class="streak-text">Streak: <strong class="streak-highlight">15 days</strong></span>
               </div>
             </div>
             <button type="button" class="btn-complete" aria-label="Complete Learn Coding">
-              <span class="btn-icon" aria-hidden="true">✓</span> Complete
+              <span class="btn-check" aria-hidden="true">✓</span> Complete
             </button>
           </article>
 
         </div>
       </section>
 
-      <!-- Motivational Banner with Vector Foliage Motif -->
-      <section class="quote-banner" aria-label="Daily Inspiration">
-        <div class="quote-banner-icon-wrap" aria-hidden="true">
-          <svg class="banner-leaf-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="18" cy="18" r="18" fill="rgba(255,255,255,0.12)"/>
-            <path d="M18 29V14C18 9 23 7.5 28 8.5C28 14 24.5 17.5 20 18" stroke="#14B8A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M18 20C15 16.5 11.5 15.5 8.5 16.5C7.5 21 10 25 18 25" stroke="#14B8A6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+      <!-- Motivational Banner Section -->
+      <section class="quote-banner" aria-label="Daily Inspiration Banner">
+        <div class="banner-icon-box" aria-hidden="true">
+          <span class="banner-plant">🌱</span>
         </div>
-        <div class="quote-banner-content">
-          <h3 class="quote-banner-title">Consistency beats perfection.</h3>
-          <p class="quote-banner-sub">You don't need to be perfect. You just need to keep showing up.</p>
+        <div class="banner-text-box">
+          <h3 class="banner-title">Small habits. Extraordinary changes.</h3>
+          <p class="banner-sub">Great things are done by a series of small things brought together every single day.</p>
         </div>
       </section>
 
@@ -330,9 +304,11 @@
          Requirements: 'Built with the CodGen Frontend Internship | codgen.in'
          =================================================================== -->
     <footer class="footer">
-      <p class="footer-text">
-        Built with the CodGen Frontend Internship | <a href="https://codgen.in" target="_blank" rel="noopener noreferrer" class="footer-link">codgen.in</a>
-      </p>
+      <div class="footer-inner">
+        <p class="footer-text">
+          Built with the CodGen Frontend Internship | <a href="https://codgen.in" target="_blank" rel="noopener noreferrer" class="footer-link">codgen.in</a>
+        </p>
+      </div>
     </footer>
 
   </div>
