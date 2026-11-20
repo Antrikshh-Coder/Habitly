@@ -1,34 +1,31 @@
 /* ==========================================================================
    CodGen Frontend Development Internship | Habitly
-   Week 1 Task: Build the Habitly Layout & Habit Cards
+   Week 1: Build the Habitly Layout & Habit Cards
    Technologies: Pure HTML5 & CSS3 (Zero JavaScript)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. DESIGN TOKENS & CSS VARIABLES
+   1. DESIGN GUIDE & CSS VARIABLES (Defined in :root as per PDF requirements)
    -------------------------------------------------------------------------- */
 :root {
-  /* Official CodGen Palette */
-  --navy: #0B1F3A;
-  --teal: #14B8A6;
-  --teal-hover: #0D9488;
-  --bg: #F8FAFC;
-  --card-bg: #FFFFFF;
-  --border: #E2E8F0;
-  --border-hover: #CBD5E1;
+  /* Official CodGen Design Guide Palette */
+  --navy: #0B1F3A;            /* Header, headings */
+  --teal: #14B8A6;            /* Buttons, accents, streak highlights */
+  --teal-hover: #0D9488;      /* Hover state for buttons */
+  --bg: #F8FAFC;              /* Page background */
+  --card-bg: #FFFFFF;         /* Habit and stat cards */
+  --card-radius: 12px;        /* 12px radius specified in PDF */
+  --soft-shadow: 0 1px 3px rgba(11, 31, 58, 0.06), 0 4px 12px rgba(11, 31, 58, 0.04);
+  --hover-shadow: 0 8px 24px rgba(11, 31, 58, 0.08), 0 2px 6px rgba(11, 31, 58, 0.04);
+  --border: #E2E8F0;          /* Clean structural borders */
 
-  /* Typography */
-  --text-main: #0B1F3A;
+  /* Text Tokens */
+  --text-primary: #0B1F3A;
   --text-muted: #64748B;
   --text-light: #94A3B8;
 
-  /* Card Specs: White + soft shadow + 12px radius */
-  --card-radius: 12px;
-  --shadow-soft: 0 1px 3px rgba(11, 31, 58, 0.05), 0 4px 12px rgba(11, 31, 58, 0.04);
-  --shadow-hover: 0 10px 24px rgba(11, 31, 58, 0.08), 0 3px 8px rgba(11, 31, 58, 0.04);
-  --shadow-btn: 0 2px 8px rgba(20, 184, 166, 0.25);
-
-  /* Category Backgrounds & Accent Colors */
+  /* Accent Soft Backgrounds for Emojis */
+  --accent-soft: #E6F7F5;
   --health-bg: #E0F2FE;
   --health-color: #0284C7;
   --learning-bg: #EEF2FF;
@@ -39,24 +36,24 @@
   --wellness-color: #059669;
   --productivity-bg: #F3E8FF;
   --productivity-color: #9333EA;
-  --mindful-bg: #FCE7F3;
-  --mindful-color: #DB2777;
 
-  /* Typography */
+  /* Typography: Inter with system fallback */
   --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-  /* Strict 8px Spacing Multiples */
+  /* Strict 8px Spacing Scale (Multiples of 8px) */
   --space-8: 8px;
   --space-16: 16px;
   --space-24: 24px;
   --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
 
   /* Transitions */
-  --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition: all 0.2s ease-in-out;
 }
 
 /* --------------------------------------------------------------------------
-   2. GLOBAL RESETS & BASE STYLES
+   2. BASE & RESETS
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -73,31 +70,22 @@ html {
 body {
   font-family: var(--font-family);
   background-color: var(--bg);
-  color: var(--text-main);
+  color: var(--text-primary);
   line-height: 1.5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
-/* Clean, balanced 1040px container */
-.container {
+.app-container {
   max-width: 1040px;
-  width: 100%;
   margin: 0 auto;
-  padding: var(--space-24) var(--space-20);
+  padding: var(--space-24) var(--space-16);
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--space-24);
-}
-
-/* Card Foundation: 12px radius, soft shadow, clean border */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
-  box-shadow: var(--shadow-soft);
-  transition: var(--transition);
+  gap: var(--space-32);
 }
 
 /* --------------------------------------------------------------------------
@@ -115,7 +103,7 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-.brand-group {
+.header-brand {
   display: flex;
   align-items: center;
   gap: var(--space-16);
@@ -124,47 +112,56 @@ body {
 .brand-logo {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(11, 31, 58, 0.1);
-  border: 1px solid var(--border);
-  transition: var(--transition);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.brand-logo:hover {
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(11, 31, 58, 0.12);
+  border: 1px solid var(--border);
+  transition: transform var(--transition);
+}
+
+.brand-logo-img:hover {
   transform: scale(1.05);
 }
 
-.brand-text {
+.brand-text-group {
   display: flex;
   flex-direction: column;
 }
 
-.brand-title {
-  font-size: 1.625rem;
+.logo-text {
+  font-size: 1.75rem;
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.02em;
   line-height: 1.15;
 }
 
-.brand-dot {
+.logo-dot {
   color: var(--teal);
 }
 
-.brand-subtitle {
+.brand-sub {
   font-size: 0.8125rem;
   color: var(--text-muted);
   font-weight: 500;
 }
 
-.header-meta {
+.header-right {
   display: flex;
   align-items: center;
   gap: var(--space-16);
 }
 
-.date-pill {
+.date-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--space-8);
@@ -174,19 +171,15 @@ body {
   border-radius: 999px;
   font-size: 0.875rem;
   color: var(--text-muted);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--soft-shadow);
   user-select: none;
 }
 
-.date-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--teal);
-}
-
-.date-icon {
-  font-size: 0.95rem;
+.calendar-svg {
+  width: 16px;
+  height: 16px;
+  color: var(--teal);
+  flex-shrink: 0;
 }
 
 .date-text {
@@ -212,97 +205,68 @@ body {
 }
 
 .user-avatar:hover {
-  transform: scale(1.05);
+  transform: scale(1.06);
   box-shadow: 0 0 0 2px var(--teal);
 }
 
 /* --------------------------------------------------------------------------
-   4. MAIN CONTENT
+   4. MAIN CONTENT & SECTIONS
    -------------------------------------------------------------------------- */
-.main {
+.main-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-24);
+  gap: var(--space-32);
 }
 
-/* Hero Greeting & Motivational Quote Card */
-.hero-card {
-  background: linear-gradient(135deg, var(--navy) 0%, #0f2c4c 55%, #0d3a4b 100%);
+/* Welcome Card with Vector Illustration */
+.welcome-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #123A63 100%);
   border-radius: var(--card-radius);
-  padding: 28px 32px;
+  padding: var(--space-24) var(--space-32);
   color: #FFFFFF;
-  box-shadow: var(--shadow-soft);
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-24);
+  box-shadow: var(--soft-shadow);
 }
 
-.hero-card::after {
-  content: '';
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(20, 184, 166, 0.22) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
+.welcome-text-wrap {
+  max-width: 520px;
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
 }
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-  font-size: 0.6875rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #5EEAD4;
-  width: fit-content;
-  margin-bottom: 2px;
-}
-
-.hero-title {
-  font-size: 1.625rem;
+.welcome-heading {
+  font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  line-height: 1.25;
 }
 
-.hero-lead {
+.welcome-lead {
   font-size: 0.9375rem;
   color: #CBD5E1;
-  line-height: 1.55;
-  max-width: 680px;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
-.hero-quote {
+.quote-box {
   background: rgba(255, 255, 255, 0.08);
   border-left: 3px solid var(--teal);
   border-radius: 8px;
-  padding: 12px 16px;
+  padding: var(--space-12) var(--space-16);
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  margin-top: 6px;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
 }
 
-.quote-symbol {
+.quote-mark {
   font-size: 1.75rem;
-  line-height: 0.9;
+  line-height: 1;
   color: var(--teal);
   font-family: Georgia, serif;
-  opacity: 0.7;
 }
 
 .quote-text {
@@ -312,14 +276,30 @@ body {
   line-height: 1.45;
 }
 
+/* Welcome Illustration */
+.welcome-illustration-wrap {
+  width: 180px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-illustration {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
+}
+
 /* --------------------------------------------------------------------------
-   5. SUMMARY STATISTICS ROW (3 STAT CARDS)
+   5. SUMMARY STATISTICS ROW (3 Stat Cards)
    - Done today 3/5
    - Best streak 12 days
    - This week 78%
-   - 12px radius, soft shadow
+   - 12px radius + soft shadow as per PDF
    -------------------------------------------------------------------------- */
-.stats-section {
+.summary-section {
   width: 100%;
 }
 
@@ -330,94 +310,81 @@ body {
 }
 
 .stat-card {
-  padding: var(--space-20) var(--space-24);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: var(--space-24);
+  box-shadow: var(--soft-shadow);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: var(--transition);
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--border-hover);
+  box-shadow: var(--hover-shadow);
 }
 
-.stat-info {
+.stat-meta {
   display: flex;
   flex-direction: column;
 }
 
-.stat-pill {
-  font-size: 0.625rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  padding: 2px 6px;
-  border-radius: 4px;
-  width: fit-content;
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
   margin-bottom: 4px;
 }
 
-.pill-teal { background-color: #E6F7F5; color: #0F766E; }
-.pill-amber { background-color: #FEF3C7; color: #B45309; }
-.pill-navy { background-color: #EFF6FF; color: #1D4ED8; }
-
 .stat-value {
-  font-size: 1.875rem;
+  font-size: 1.75rem;
   font-weight: 800;
   color: var(--navy);
-  line-height: 1.15;
-}
-
-.text-amber { color: #D97706; }
-.text-navy { color: var(--navy); }
-
-.stat-label {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: var(--navy);
-  margin-top: 2px;
+  line-height: 1.2;
 }
 
 .stat-desc {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--text-muted);
-}
-
-.stat-visual {
-  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 /* Stat Visual 1: Circular Progress Ring */
 .progress-ring {
-  width: 58px;
-  height: 58px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: conic-gradient(var(--teal) 0% 60%, var(--border) 60% 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.ring-cutout {
-  width: 44px;
-  height: 44px;
-  background-color: var(--card-bg);
+.ring-center {
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
+  background-color: var(--card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.ring-val {
+.ring-text {
   font-size: 0.75rem;
   font-weight: 800;
   color: var(--teal);
 }
 
 /* Stat Visual 2: Best Streak Flame Badge */
-.flame-badge {
-  width: 58px;
-  height: 58px;
+.streak-badge {
+  width: 60px;
+  height: 60px;
   background: #FFFBEB;
   border: 1px solid #FDE68A;
   border-radius: var(--card-radius);
@@ -427,22 +394,22 @@ body {
   justify-content: center;
 }
 
-.flame-icon {
+.streak-flame {
   font-size: 1.5rem;
   line-height: 1;
 }
 
-.flame-label {
-  font-size: 0.5625rem;
+.streak-tag {
+  font-size: 0.625rem;
   font-weight: 800;
   color: #B45309;
   letter-spacing: 0.05em;
   margin-top: 2px;
 }
 
-/* Stat Visual 3: Progress Bar Track */
+/* Stat Visual 3: Weekly Progress Bar */
 .stat-visual-bar {
-  width: 100px;
+  width: 110px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -476,14 +443,15 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   6. HABIT CARDS GRID (Balanced 3x2 Grid on Desktop)
-   - 3 columns x 2 rows = 6 balanced cards with zero awkward empty slots!
+   6. HABIT CARDS GRID (At least 5 cards in a grid)
+   - Emoji, habit name, streak (highlighted in teal), visible Complete button
+   - Responsive multi-column grid via CSS Grid repeat(auto-fit, minmax(260px, 1fr))
    -------------------------------------------------------------------------- */
 .habits-section {
   width: 100%;
 }
 
-.section-header {
+.habits-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -491,14 +459,14 @@ body {
   gap: var(--space-16);
 }
 
-.section-title {
+.habits-title {
   font-size: 1.375rem;
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.02em;
 }
 
-.section-subtitle {
+.habits-subtitle {
   font-size: 0.875rem;
   color: var(--text-muted);
   margin-top: 2px;
@@ -513,39 +481,44 @@ body {
   border: 1px solid var(--border);
   border-radius: 999px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--navy);
-  box-shadow: var(--shadow-soft);
+  box-shadow: var(--soft-shadow);
   white-space: nowrap;
 }
 
-.live-dot {
+.status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: var(--teal);
 }
 
-/* 3 columns on desktop: perfectly balances 6 cards into 2 rows of 3 */
+/* CSS Grid layout recommended in PDF */
 .habits-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--space-16);
 }
 
-/* Habit Card (12px radius, soft shadow, white) */
+/* Habit Card (White + soft shadow + 12px radius) */
 .habit-card {
-  padding: var(--space-20);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: var(--space-24);
+  box-shadow: var(--soft-shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: var(--space-16);
+  transition: var(--transition);
 }
 
 .habit-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--border-hover);
+  box-shadow: var(--hover-shadow);
+  border-color: #CBD5E1;
 }
 
 .habit-top {
@@ -554,10 +527,10 @@ body {
   justify-content: space-between;
 }
 
-.emoji-box {
+.habit-emoji-wrap {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: var(--card-radius);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -565,40 +538,31 @@ body {
   user-select: none;
 }
 
-.emoji-water { background-color: var(--health-bg); }
-.emoji-read { background-color: var(--learning-bg); }
-.emoji-fit { background-color: var(--fitness-bg); }
-.emoji-med { background-color: var(--wellness-bg); }
-.emoji-code { background-color: var(--productivity-bg); }
-.emoji-journal { background-color: var(--mindful-bg); }
+.emoji-health { background-color: var(--health-bg); }
+.emoji-learning { background-color: var(--learning-bg); }
+.emoji-fitness { background-color: var(--fitness-bg); }
+.emoji-wellness { background-color: var(--wellness-bg); }
+.emoji-productivity { background-color: var(--productivity-bg); }
 
-.cat-badge {
+.category-badge {
   font-size: 0.6875rem;
   font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 4px 8px;
   border-radius: 999px;
-  text-transform: uppercase;
 }
 
-.cat-health { background-color: var(--health-bg); color: var(--health-color); }
-.cat-learning { background-color: var(--learning-bg); color: var(--learning-color); }
-.cat-fitness { background-color: var(--fitness-bg); color: var(--fitness-color); }
-.cat-wellness { background-color: var(--wellness-bg); color: var(--wellness-color); }
-.cat-productivity { background-color: var(--productivity-bg); color: var(--productivity-color); }
-.cat-mindful { background-color: var(--mindful-bg); color: var(--mindful-color); }
+.badge-health { background-color: var(--health-bg); color: var(--health-color); }
+.badge-learning { background-color: var(--learning-bg); color: var(--learning-color); }
+.badge-fitness { background-color: var(--fitness-bg); color: var(--fitness-color); }
+.badge-wellness { background-color: var(--wellness-bg); color: var(--wellness-color); }
+.badge-productivity { background-color: var(--productivity-bg); color: var(--productivity-color); }
 
 .habit-body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-
-.habit-num {
-  font-size: 0.6875rem;
-  font-weight: 800;
-  color: var(--text-light);
-  letter-spacing: 0.08em;
 }
 
 .habit-name {
@@ -608,30 +572,25 @@ body {
   letter-spacing: -0.01em;
 }
 
-.streak-pill {
-  display: inline-flex;
+.streak-row {
+  display: flex;
   align-items: center;
   gap: 6px;
-  background-color: #FFFBEB;
-  border: 1px solid #FEF3C7;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
-  width: fit-content;
 }
 
-.streak-flame {
+.streak-fire {
   font-size: 0.95rem;
 }
 
-/* Streak highlight in Teal as required by PDF */
-.streak-num {
+/* Teal streak highlight as per PDF design guide */
+.streak-highlight {
   color: var(--teal);
   font-weight: 700;
 }
 
-/* Visible 'Complete' button with hover state */
+/* Complete Button (Teal, visible, with hover state) */
 .btn-complete {
   width: 100%;
   display: flex;
@@ -648,7 +607,7 @@ body {
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: var(--shadow-btn);
+  box-shadow: 0 1px 2px rgba(20, 184, 166, 0.2);
   transition: var(--transition);
 }
 
@@ -662,60 +621,59 @@ body {
   transform: translateY(0);
 }
 
-.btn-check {
+.btn-icon {
   font-size: 0.875rem;
   font-weight: 800;
 }
 
 /* --------------------------------------------------------------------------
-   7. MOTIVATIONAL BANNER SECTION
+   7. MOTIVATIONAL BANNER WITH SVG FOLIAGE
    -------------------------------------------------------------------------- */
-.banner-card {
+.quote-banner {
   background: linear-gradient(135deg, var(--navy) 0%, #17385E 100%);
-  border: 0;
+  border-radius: var(--card-radius);
+  padding: var(--space-24) var(--space-32);
   color: #FFFFFF;
-  padding: var(--space-20) var(--space-24);
   display: flex;
   align-items: center;
-  gap: var(--space-16);
+  gap: var(--space-20);
+  box-shadow: var(--soft-shadow);
 }
 
-.banner-icon {
+.quote-banner-icon-wrap {
   width: 48px;
   height: 48px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
   flex-shrink: 0;
 }
 
-.banner-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.banner-leaf-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-.banner-title {
-  font-size: 1.125rem;
+.quote-banner-title {
+  font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.01em;
+  margin-bottom: 4px;
 }
 
-.banner-sub {
+.quote-banner-sub {
   font-size: 0.875rem;
   color: #CBD5E1;
 }
 
 /* --------------------------------------------------------------------------
    8. FOOTER
-   - Exactly: 'Built with the CodGen Frontend Internship | codgen.in'
+   - 'Built with the CodGen Frontend Internship | codgen.in' (as required in PDF)
    -------------------------------------------------------------------------- */
 .footer {
   text-align: center;
-  padding: var(--space-20) 0;
+  padding: var(--space-24) 0;
   border-top: 1px solid var(--border);
   margin-top: auto;
 }
@@ -739,53 +697,62 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   9. RESPONSIVE DESIGN (360px Phone, 768px Tablet, 1280px Laptop)
+   9. RESPONSIVE DESIGN (360px Phone, 768px Tablet, 1280px Laptop/Desktop)
    -------------------------------------------------------------------------- */
 
-/* TABLET (max-width: 860px) */
-@media (max-width: 860px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-12);
-  }
-
-  .habits-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
+/* TABLET (max-width: 768px) */
 @media (max-width: 768px) {
-  .container {
+  .app-container {
     padding: var(--space-16);
-    gap: var(--space-20);
+    gap: var(--space-24);
   }
 
   .header {
     flex-wrap: wrap;
   }
 
-  .date-pill {
+  .date-badge {
     display: none; /* Hide date on tablet to prevent crowding */
   }
 
-  .hero-card {
+  .welcome-card {
+    flex-direction: column;
+    align-items: flex-start;
     padding: var(--space-20);
+  }
+
+  .welcome-illustration-wrap {
+    display: none; /* Hide large graphic on tablet/mobile to preserve space */
+  }
+
+  .quote-box {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  .habits-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 }
 
-/* PHONE (max-width: 520px / 360px targeted) */
-@media (max-width: 520px) {
-  .brand-logo {
+/* PHONE (max-width: 480px / 360px targeted) */
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 1.5rem;
+  }
+
+  .brand-sub {
+    display: none;
+  }
+
+  .brand-logo-img {
     width: 38px;
     height: 38px;
-  }
-
-  .brand-title {
-    font-size: 1.375rem;
-  }
-
-  .brand-subtitle {
-    display: none; /* Keep mobile header clean */
   }
 
   .user-avatar {
@@ -793,37 +760,27 @@ body {
     height: 36px;
   }
 
-  .hero-title {
-    font-size: 1.25rem;
-  }
-
-  .hero-lead {
-    font-size: 0.875rem;
-  }
-
-  /* One column on phones as required by PDF */
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* One column on phones as per PDF */
+  }
+
+  .habits-grid {
+    grid-template-columns: 1fr; /* One column on phones as per PDF */
+  }
+
+  .welcome-heading {
+    font-size: 1.25rem;
   }
 
   .stat-card {
     padding: var(--space-16);
   }
 
-  .stat-value {
-    font-size: 1.625rem;
-  }
-
-  /* One column on phones as required by PDF */
-  .habits-grid {
-    grid-template-columns: 1fr;
-  }
-
   .habit-card {
     padding: var(--space-16);
   }
 
-  .banner-card {
+  .quote-banner {
     flex-direction: column;
     align-items: flex-start;
     padding: var(--space-16);
