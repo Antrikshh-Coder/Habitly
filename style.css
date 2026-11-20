@@ -5,31 +5,28 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. DESIGN GUIDE & CSS VARIABLES
+   1. DESIGN TOKENS & CSS VARIABLES
    -------------------------------------------------------------------------- */
 :root {
   /* Official CodGen Palette */
   --navy: #0B1F3A;
   --teal: #14B8A6;
   --teal-hover: #0D9488;
-  --teal-dark: #0F766E;
-  --teal-soft: #F0FDFA;
-  --teal-light: #CCFBF1;
   --bg: #F8FAFC;
   --card-bg: #FFFFFF;
   --border: #E2E8F0;
   --border-hover: #CBD5E1;
 
-  /* Typography Colors */
-  --text-primary: #0B1F3A;
+  /* Typography */
+  --text-main: #0B1F3A;
   --text-muted: #64748B;
   --text-light: #94A3B8;
 
   /* Card Specs: White + soft shadow + 12px radius */
   --card-radius: 12px;
-  --soft-shadow: 0 1px 3px rgba(11, 31, 58, 0.05), 0 4px 14px rgba(11, 31, 58, 0.04);
-  --hover-shadow: 0 10px 24px rgba(11, 31, 58, 0.08), 0 3px 8px rgba(11, 31, 58, 0.04);
-  --btn-shadow: 0 2px 8px rgba(20, 184, 166, 0.25);
+  --shadow-soft: 0 1px 3px rgba(11, 31, 58, 0.05), 0 4px 12px rgba(11, 31, 58, 0.04);
+  --shadow-hover: 0 10px 24px rgba(11, 31, 58, 0.08), 0 3px 8px rgba(11, 31, 58, 0.04);
+  --shadow-btn: 0 2px 8px rgba(20, 184, 166, 0.25);
 
   /* Category Backgrounds & Accent Colors */
   --health-bg: #E0F2FE;
@@ -42,16 +39,17 @@
   --wellness-color: #059669;
   --productivity-bg: #F3E8FF;
   --productivity-color: #9333EA;
+  --mindful-bg: #FCE7F3;
+  --mindful-color: #DB2777;
 
   /* Typography */
   --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-  /* Strict 8px Spacing Scale */
+  /* Strict 8px Spacing Multiples */
   --space-8: 8px;
   --space-16: 16px;
   --space-24: 24px;
   --space-32: 32px;
-  --space-40: 40px;
 
   /* Transitions */
   --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -75,22 +73,31 @@ html {
 body {
   font-family: var(--font-family);
   background-color: var(--bg);
-  color: var(--text-primary);
+  color: var(--text-main);
   line-height: 1.5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
 }
 
-.app-container {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: var(--space-24) var(--space-16);
+/* Balanced 1040px container */
+.container {
+  max-width: 1040px;
   width: 100%;
+  margin: 0 auto;
+  padding: var(--space-24) var(--space-20);
   display: flex;
   flex-direction: column;
-  gap: var(--space-32);
+  gap: var(--space-24);
+}
+
+/* Card Foundation: 12px radius, soft shadow, clean border */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow-soft);
+  transition: var(--transition);
 }
 
 /* --------------------------------------------------------------------------
@@ -108,39 +115,32 @@ body {
   border-bottom: 1px solid var(--border);
 }
 
-.header-brand {
-  display: flex;
-  align-items: center;
-}
-
-.brand-link {
+.brand-group {
   display: flex;
   align-items: center;
   gap: var(--space-16);
-  text-decoration: none;
-  color: inherit;
 }
 
-.brand-logo-img {
+.brand-logo {
   width: 44px;
   height: 44px;
   border-radius: 10px;
   object-fit: cover;
   box-shadow: 0 2px 8px rgba(11, 31, 58, 0.1);
   border: 1px solid var(--border);
-  transition: transform var(--transition);
+  transition: var(--transition);
 }
 
-.brand-link:hover .brand-logo-img {
+.brand-logo:hover {
   transform: scale(1.05);
 }
 
-.brand-text-group {
+.brand-text {
   display: flex;
   flex-direction: column;
 }
 
-.logo-text {
+.brand-title {
   font-size: 1.625rem;
   font-weight: 800;
   color: var(--navy);
@@ -148,23 +148,23 @@ body {
   line-height: 1.15;
 }
 
-.logo-dot {
+.brand-dot {
   color: var(--teal);
 }
 
-.brand-sub {
+.brand-subtitle {
   font-size: 0.8125rem;
   color: var(--text-muted);
   font-weight: 500;
 }
 
-.header-right {
+.header-meta {
   display: flex;
   align-items: center;
   gap: var(--space-16);
 }
 
-.date-badge {
+.date-pill {
   display: inline-flex;
   align-items: center;
   gap: var(--space-8);
@@ -174,7 +174,7 @@ body {
   border-radius: 999px;
   font-size: 0.875rem;
   color: var(--text-muted);
-  box-shadow: var(--soft-shadow);
+  box-shadow: var(--shadow-soft);
   user-select: none;
 }
 
@@ -217,229 +217,203 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   4. NEW MODERN WELCOME & MOMENTUM BANNER
-   - Clean, light, dual-card SaaS layout
+   4. UPPER HERO CARD
+   - Deep Navy background
+   - Left side: Greeting & Motivational Quote
+   - Right side: Distinct Rhythm Ring Widget
    -------------------------------------------------------------------------- */
-.main-content {
+.main {
   display: flex;
   flex-direction: column;
-  gap: var(--space-32);
+  gap: var(--space-24);
 }
 
-.welcome-banner {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 55%, #F0FDFA 100%);
-  border: 1px solid var(--border);
+.hero-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #0f2c4c 55%, #0d3a4b 100%);
   border-radius: var(--card-radius);
-  padding: var(--space-32);
+  padding: 28px 32px;
+  color: #FFFFFF;
+  box-shadow: var(--shadow-soft);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-32);
-  box-shadow: var(--soft-shadow);
+  gap: var(--space-24);
   position: relative;
   overflow: hidden;
 }
 
-.welcome-banner::after {
+.hero-card::after {
   content: '';
   position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, transparent 70%);
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.22) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
 }
 
-.banner-left {
+.hero-left {
+  position: relative;
+  z-index: 1;
   max-width: 580px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
-  position: relative;
-  z-index: 1;
+  gap: var(--space-8);
 }
 
-.banner-badge {
+.hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   padding: 4px 10px;
-  background-color: var(--teal-soft);
-  border: 1px solid var(--teal-light);
-  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
   font-size: 0.6875rem;
   font-weight: 800;
   letter-spacing: 0.08em;
-  color: var(--teal-dark);
+  color: #5EEAD4;
   width: fit-content;
+  margin-bottom: 2px;
 }
 
-.badge-sparkle {
-  font-size: 0.85rem;
-}
-
-.banner-heading {
+.hero-title {
   font-size: 1.625rem;
   font-weight: 800;
-  color: var(--navy);
   letter-spacing: -0.02em;
   line-height: 1.25;
 }
 
-.banner-lead {
+.hero-lead {
   font-size: 0.9375rem;
-  color: var(--text-muted);
+  color: #CBD5E1;
   line-height: 1.55;
 }
 
-.banner-quote-box {
-  background: #FFFFFF;
-  border: 1px solid var(--border);
+.hero-quote {
+  background: rgba(255, 255, 255, 0.08);
   border-left: 3px solid var(--teal);
   border-radius: 8px;
-  padding: 12px 16px;
+  padding: 10px 14px;
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  box-shadow: 0 1px 3px rgba(11, 31, 58, 0.03);
+  margin-top: 6px;
 }
 
-.quote-icon {
-  font-size: 1.6rem;
+.quote-symbol {
+  font-size: 1.75rem;
   line-height: 0.9;
   color: var(--teal);
   font-family: Georgia, serif;
+  opacity: 0.7;
 }
 
-.quote-content {
+.quote-text {
   font-size: 0.875rem;
   font-style: italic;
-  color: var(--navy);
+  color: #F8FAFC;
   line-height: 1.45;
 }
 
-/* Right Side: Rhythm & Momentum Widget */
-.banner-right {
-  flex-shrink: 0;
+/* Right Side Rhythm Card Inside Hero */
+.hero-right {
   position: relative;
   z-index: 1;
+  flex-shrink: 0;
 }
 
-.momentum-card {
-  background: #FFFFFF;
-  border: 1px solid var(--border);
+.rhythm-glass-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--card-radius);
-  padding: var(--space-20);
-  width: 280px;
-  box-shadow: 0 4px 14px rgba(11, 31, 58, 0.06);
+  padding: var(--space-16) var(--space-20);
+  width: 210px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
-  transition: transform var(--transition);
-}
-
-.momentum-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--hover-shadow);
-}
-
-.momentum-header {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
+  text-align: center;
 }
 
-.momentum-title {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: var(--navy);
-}
-
-.momentum-status {
-  font-size: 0.625rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background-color: var(--teal-soft);
-  color: var(--teal-dark);
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--teal-light);
-}
-
-.momentum-body {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.momentum-score {
-  display: flex;
-  align-items: baseline;
-  gap: 3px;
-}
-
-.score-large {
-  font-size: 2.25rem;
-  font-weight: 900;
-  color: var(--teal);
-  line-height: 1;
-}
-
-.score-total {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-light);
-}
-
-.momentum-details {
-  display: flex;
-  flex-direction: column;
-}
-
-.details-title {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--navy);
-}
-
-.details-sub {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.progress-track-mini {
-  width: 100%;
-  height: 6px;
-  background-color: var(--border);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.progress-fill-mini {
-  height: 100%;
-  background: linear-gradient(90deg, var(--teal) 0%, #0D9488 100%);
-  border-radius: 999px;
-}
-
-.momentum-footer {
+.rhythm-top {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.rhythm-tag {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #5EEAD4;
+}
+
+.rhythm-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--teal);
+}
+
+.rhythm-ring-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rhythm-circular-ring {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: conic-gradient(var(--teal) 0% 60%, rgba(255, 255, 255, 0.15) 60% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rhythm-ring-center {
+  width: 60px;
+  height: 60px;
+  background-color: var(--navy);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.rhythm-percent {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1;
+}
+
+.rhythm-sub {
+  font-size: 0.5625rem;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+
+.rhythm-streak-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6875rem;
+  color: #FDE68A;
+  background: rgba(245, 158, 11, 0.15);
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.rhythm-flame {
   font-size: 0.75rem;
-  color: var(--text-muted);
-  padding-top: 4px;
-  border-top: 1px solid var(--border);
-}
-
-.flame-icon-mini {
-  font-size: 0.95rem;
-}
-
-.momentum-streak-text strong {
-  color: #B45309;
 }
 
 /* --------------------------------------------------------------------------
@@ -447,9 +421,9 @@ body {
    - Done today 3/5
    - Best streak 12 days
    - This week 78%
-   - 12px radius + soft shadow as per PDF
+   - 12px radius, soft shadow
    -------------------------------------------------------------------------- */
-.summary-section {
+.stats-section {
   width: 100%;
 }
 
@@ -460,24 +434,19 @@ body {
 }
 
 .stat-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
   padding: var(--space-20) var(--space-24);
-  box-shadow: var(--soft-shadow);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: var(--transition);
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--hover-shadow);
+  box-shadow: var(--shadow-hover);
   border-color: var(--border-hover);
 }
 
-.stat-meta {
+.stat-info {
   display: flex;
   flex-direction: column;
 }
@@ -533,7 +502,7 @@ body {
   justify-content: center;
 }
 
-.ring-center {
+.ring-cutout {
   width: 44px;
   height: 44px;
   background-color: var(--card-bg);
@@ -543,14 +512,14 @@ body {
   justify-content: center;
 }
 
-.ring-text {
+.ring-val {
   font-size: 0.75rem;
   font-weight: 800;
   color: var(--teal);
 }
 
 /* Stat Visual 2: Best Streak Flame Badge */
-.streak-badge {
+.flame-badge {
   width: 58px;
   height: 58px;
   background: #FFFBEB;
@@ -562,12 +531,12 @@ body {
   justify-content: center;
 }
 
-.streak-flame {
+.flame-icon {
   font-size: 1.5rem;
   line-height: 1;
 }
 
-.streak-tag {
+.flame-label {
   font-size: 0.5625rem;
   font-weight: 800;
   color: #B45309;
@@ -575,7 +544,7 @@ body {
   margin-top: 2px;
 }
 
-/* Stat Visual 3: Weekly Progress Bar */
+/* Stat Visual 3: Progress Bar Track */
 .stat-visual-bar {
   width: 100px;
   display: flex;
@@ -611,15 +580,13 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   6. HABIT CARDS GRID (At least 5 cards in a grid)
-   - Emoji, habit name, streak (highlighted in teal), visible Complete button
-   - Responsive multi-column grid via CSS Grid repeat(auto-fit, minmax(280px, 1fr))
+   6. HABIT CARDS GRID (6 Cards - Perfect 3x2 Grid)
    -------------------------------------------------------------------------- */
 .habits-section {
   width: 100%;
 }
 
-.habits-header {
+.section-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -627,14 +594,14 @@ body {
   gap: var(--space-16);
 }
 
-.habits-title {
+.section-title {
   font-size: 1.375rem;
   font-weight: 800;
   color: var(--navy);
   letter-spacing: -0.02em;
 }
 
-.habits-subtitle {
+.section-subtitle {
   font-size: 0.875rem;
   color: var(--text-muted);
   margin-top: 2px;
@@ -651,41 +618,36 @@ body {
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--navy);
-  box-shadow: var(--soft-shadow);
+  box-shadow: var(--shadow-soft);
   white-space: nowrap;
 }
 
-.status-dot {
+.live-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background-color: var(--teal);
 }
 
-/* CSS Grid layout */
+/* 3 columns on desktop: balances 6 cards into 2 rows of 3 */
 .habits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-16);
 }
 
-/* Habit Card (White + soft shadow + 12px radius) */
+/* Habit Card (12px radius, soft shadow, white) */
 .habit-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--card-radius);
   padding: var(--space-20);
-  box-shadow: var(--soft-shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: var(--space-16);
-  transition: var(--transition);
 }
 
 .habit-card:hover {
   transform: translateY(-3px);
-  box-shadow: var(--hover-shadow);
+  box-shadow: var(--shadow-hover);
   border-color: var(--border-hover);
 }
 
@@ -695,7 +657,7 @@ body {
   justify-content: space-between;
 }
 
-.habit-emoji-wrap {
+.emoji-box {
   width: 48px;
   height: 48px;
   border-radius: 12px;
@@ -706,26 +668,28 @@ body {
   user-select: none;
 }
 
-.emoji-health { background-color: var(--health-bg); }
-.emoji-learning { background-color: var(--learning-bg); }
-.emoji-fitness { background-color: var(--fitness-bg); }
-.emoji-wellness { background-color: var(--wellness-bg); }
-.emoji-productivity { background-color: var(--productivity-bg); }
+.emoji-water { background-color: var(--health-bg); }
+.emoji-read { background-color: var(--learning-bg); }
+.emoji-fit { background-color: var(--fitness-bg); }
+.emoji-med { background-color: var(--wellness-bg); }
+.emoji-code { background-color: var(--productivity-bg); }
+.emoji-journal { background-color: var(--mindful-bg); }
 
-.category-badge {
+.cat-badge {
   font-size: 0.6875rem;
   font-weight: 700;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 4px 8px;
   border-radius: 999px;
+  text-transform: uppercase;
 }
 
-.badge-health { background-color: var(--health-bg); color: var(--health-color); }
-.badge-learning { background-color: var(--learning-bg); color: var(--learning-color); }
-.badge-fitness { background-color: var(--fitness-bg); color: var(--fitness-color); }
-.badge-wellness { background-color: var(--wellness-bg); color: var(--wellness-color); }
-.badge-productivity { background-color: var(--productivity-bg); color: var(--productivity-color); }
+.cat-health { background-color: var(--health-bg); color: var(--health-color); }
+.cat-learning { background-color: var(--learning-bg); color: var(--learning-color); }
+.cat-fitness { background-color: var(--fitness-bg); color: var(--fitness-color); }
+.cat-wellness { background-color: var(--wellness-bg); color: var(--wellness-color); }
+.cat-productivity { background-color: var(--productivity-bg); color: var(--productivity-color); }
+.cat-mindful { background-color: var(--mindful-bg); color: var(--mindful-color); }
 
 .habit-body {
   display: flex;
@@ -733,7 +697,7 @@ body {
   gap: 6px;
 }
 
-.habit-id {
+.habit-num {
   font-size: 0.6875rem;
   font-weight: 800;
   color: var(--text-light);
@@ -747,25 +711,30 @@ body {
   letter-spacing: -0.01em;
 }
 
-.streak-row {
-  display: flex;
+.streak-pill {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
+  background-color: #FFFBEB;
+  border: 1px solid #FEF3C7;
+  padding: 4px 10px;
+  border-radius: 999px;
   font-size: 0.8125rem;
   color: var(--text-muted);
+  width: fit-content;
 }
 
-.streak-fire {
+.streak-flame {
   font-size: 0.95rem;
 }
 
-/* Teal streak highlight as per PDF design guide */
-.streak-highlight {
+/* Streak highlight in Teal as required by PDF */
+.streak-num {
   color: var(--teal);
   font-weight: 700;
 }
 
-/* Complete Button (Teal, visible, with hover state) */
+/* Visible 'Complete' button with hover state */
 .btn-complete {
   width: 100%;
   display: flex;
@@ -782,7 +751,7 @@ body {
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: var(--btn-shadow);
+  box-shadow: var(--shadow-btn);
   transition: var(--transition);
 }
 
@@ -796,7 +765,7 @@ body {
   transform: translateY(0);
 }
 
-.btn-icon {
+.btn-check {
   font-size: 0.875rem;
   font-weight: 800;
 }
@@ -804,18 +773,17 @@ body {
 /* --------------------------------------------------------------------------
    7. MOTIVATIONAL BANNER SECTION
    -------------------------------------------------------------------------- */
-.quote-banner {
+.banner-card {
   background: linear-gradient(135deg, var(--navy) 0%, #17385E 100%);
-  border-radius: var(--card-radius);
-  padding: var(--space-20) var(--space-24);
+  border: 0;
   color: #FFFFFF;
+  padding: var(--space-20) var(--space-24);
   display: flex;
   align-items: center;
   gap: var(--space-16);
-  box-shadow: var(--soft-shadow);
 }
 
-.banner-leaf-wrap {
+.banner-icon {
   width: 48px;
   height: 48px;
   background: rgba(255, 255, 255, 0.1);
@@ -827,7 +795,7 @@ body {
   flex-shrink: 0;
 }
 
-.banner-leaf-text {
+.banner-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -846,11 +814,11 @@ body {
 
 /* --------------------------------------------------------------------------
    8. FOOTER
-   - 'Built with the CodGen Frontend Internship | codgen.in' (as required in PDF)
+   - Exactly: 'Built with the CodGen Frontend Internship | codgen.in'
    -------------------------------------------------------------------------- */
 .footer {
   text-align: center;
-  padding: var(--space-24) 0;
+  padding: var(--space-20) 0;
   border-top: 1px solid var(--border);
   margin-top: auto;
 }
@@ -874,22 +842,21 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   9. RESPONSIVE DESIGN (360px Phone, 768px Tablet, 1280px Laptop/Desktop)
+   9. RESPONSIVE DESIGN (360px Phone, 768px Tablet, 1280px Laptop)
    -------------------------------------------------------------------------- */
 
 /* TABLET (max-width: 860px) */
 @media (max-width: 860px) {
-  .welcome-banner {
+  .hero-card {
     flex-direction: column;
     align-items: flex-start;
-    padding: var(--space-24);
   }
 
-  .banner-right {
+  .hero-right {
     width: 100%;
   }
 
-  .momentum-card {
+  .rhythm-glass-card {
     width: 100%;
   }
 
@@ -899,38 +866,42 @@ body {
   }
 
   .habits-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .app-container {
+  .container {
     padding: var(--space-16);
-    gap: var(--space-24);
+    gap: var(--space-20);
   }
 
   .header {
     flex-wrap: wrap;
   }
 
-  .date-badge {
+  .date-pill {
     display: none; /* Hide date on tablet to prevent crowding */
+  }
+
+  .hero-card {
+    padding: var(--space-20);
   }
 }
 
-/* PHONE (max-width: 480px / 360px targeted) */
-@media (max-width: 480px) {
-  .logo-text {
+/* PHONE (max-width: 520px / 360px targeted) */
+@media (max-width: 520px) {
+  .brand-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand-title {
     font-size: 1.375rem;
   }
 
-  .brand-sub {
-    display: none;
-  }
-
-  .brand-logo-img {
-    width: 38px;
-    height: 38px;
+  .brand-subtitle {
+    display: none; /* Keep mobile header clean */
   }
 
   .user-avatar {
@@ -938,11 +909,11 @@ body {
     height: 36px;
   }
 
-  .banner-heading {
+  .hero-title {
     font-size: 1.25rem;
   }
 
-  .banner-lead {
+  .hero-lead {
     font-size: 0.875rem;
   }
 
@@ -968,7 +939,7 @@ body {
     padding: var(--space-16);
   }
 
-  .quote-banner {
+  .banner-card {
     flex-direction: column;
     align-items: flex-start;
     padding: var(--space-16);
