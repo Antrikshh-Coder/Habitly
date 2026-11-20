@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Habitly – Premium, modern, and responsive habit-tracking dashboard built for CodGen Frontend Internship Week 1.">
+  <meta name="description" content="Habitly – Premium, widescreen, responsive habit-tracking dashboard built for CodGen Frontend Internship Week 1.">
   <title>Habitly | Build habits that stick</title>
 
   <!-- Browser Favicon using user's logo -->
@@ -19,7 +19,7 @@
 </head>
 <body>
 
-  <!-- Ambient Background Glows -->
+  <!-- Subtle Ambient Background Glows -->
   <div class="ambient-glow glow-top" aria-hidden="true"></div>
   <div class="ambient-glow glow-bottom" aria-hidden="true"></div>
 
@@ -49,7 +49,7 @@
           <span class="date-text">Friday, 20 November 2026</span>
         </div>
 
-        <!-- Profile Avatar -->
+        <!-- User Profile Avatar -->
         <div class="user-avatar" title="Antriksh Manwadkar" aria-label="User Profile">
           <span class="avatar-initials">AM</span>
           <span class="avatar-status" title="Active today" aria-hidden="true"></span>
@@ -62,29 +62,75 @@
          =================================================================== -->
     <main class="main-content">
 
-      <!-- Welcome Hero Section -->
+      <!-- =================================================================
+           WELCOME HERO SECTION (Widescreen, Rich & Attractive)
+           ================================================================= -->
       <section class="welcome-card" aria-label="Welcome and Daily Motivation">
         <div class="welcome-inner">
+          
+          <!-- Left Column: Inspiring Typography & Quote -->
           <div class="welcome-text-group">
             <div class="welcome-pill">
               <span class="welcome-sparkle" aria-hidden="true">✨</span>
               <span>DAILY PROGRESSION DASHBOARD</span>
             </div>
+
             <h2 class="welcome-heading">
               Build better habits.<br>
               <span class="welcome-gradient-text">Become your best self.</span>
             </h2>
+
             <p class="welcome-lead">
-              Small steps every day lead to big changes. Start today, stay consistent, and celebrate every win.
+              Small steps every day lead to big changes. Start today, stay consistent, and celebrate every win along the way.
             </p>
+
+            <div class="quote-callout">
+              <span class="quote-symbol" aria-hidden="true">“</span>
+              <blockquote class="quote-text">
+                Consistency beats perfection. You don't need to be perfect, you just need to keep showing up.
+              </blockquote>
+            </div>
           </div>
 
-          <div class="quote-card">
-            <span class="quote-symbol" aria-hidden="true">“</span>
-            <blockquote class="quote-text">
-              Consistency beats perfection. You don't need to be perfect, you just need to keep showing up.
-            </blockquote>
+          <!-- Right Column: Interactive-Style Visual Rhythm Card -->
+          <div class="welcome-visual-card" aria-hidden="true">
+            <div class="visual-card-top">
+              <div class="visual-card-title">
+                <span class="visual-dot"></span>
+                <span>Today's Habit Rhythm</span>
+              </div>
+              <span class="visual-badge">Active</span>
+            </div>
+
+            <div class="visual-score-row">
+              <div class="visual-stat-big">
+                <span class="stat-big-num">3</span>
+                <span class="stat-big-denom">/ 5</span>
+              </div>
+              <div class="visual-stat-detail">
+                <span class="stat-detail-bold">60% Completed</span>
+                <span class="stat-detail-sub">2 habits remaining for today</span>
+              </div>
+            </div>
+
+            <!-- Mini 7-Day Consistency Week Track -->
+            <div class="mini-week-track">
+              <div class="day-dot done"><span class="day-lbl">M</span><span class="dot-check">✓</span></div>
+              <div class="day-dot done"><span class="day-lbl">T</span><span class="dot-check">✓</span></div>
+              <div class="day-dot done"><span class="day-lbl">W</span><span class="dot-check">✓</span></div>
+              <div class="day-dot done"><span class="day-lbl">T</span><span class="dot-check">✓</span></div>
+              <div class="day-dot today"><span class="day-lbl">F</span><span class="dot-check">3/5</span></div>
+              <div class="day-dot"><span class="day-lbl">S</span><span class="dot-check">•</span></div>
+              <div class="day-dot"><span class="day-lbl">S</span><span class="dot-check">•</span></div>
+            </div>
+
+            <!-- Mini Streak Banner -->
+            <div class="visual-streak-strip">
+              <span class="streak-flame-icon">🔥</span>
+              <span class="streak-strip-text"><strong>12-Day Streak Record</strong> – You're building momentum!</span>
+            </div>
           </div>
+
         </div>
       </section>
 
